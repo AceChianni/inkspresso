@@ -1,53 +1,47 @@
 // backend/routes/authRoutes.js
 const express = require("express");
-const router = express.Router();
-const User = require("../models/User");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const User = require("../models/User");
+const router = express.Router();
 
-// Register a new user
+// Register new user (with admin capability)
 router.post("/register", async (req, res) => {
-  try {
-    const { name, email, password, isAdmin } = req.body;
+  const { username, email, password, isAdmin } = req.body;
 
-    // Check if the user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser)
+  try {
+    // Check if the email is already in use
+    const userExists = await User.findOne({ email });
+    if (userExists) {
       return res.status(400).json({ message: "User already exists" });
+    }
 
-    // Create new user
-    const newUser = new User({ name, email, password, isAdmin });
-    await newUser.save();
+    // Hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    res.status(201).json({ message: "User registered successfully" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+    // Create a new user
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+      isAdmin: isAdmin || false,
+    });
 
-// Login a user
-router.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
+    // Save the user to the database
+    const user = await newUser.save();
 
-    // Find the user
-    const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: "User not found" });
+    // Create a JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
 
-    // Compare passwords
-    const isMatch = await user.comparePassword(password);
-    if (!isMatch)
-      return res.status(400).json({ message: "Invalid credentials" });
-
-    // Generate a token
-    const token = jwt.sign(
-      { id: user._id, isAdmin: user.isAdmin },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "1d",
-      }
-    );
-
-    res.status(200).json({ token });
+    res.status(201).json({
+      message: "User registered successfully",
+      token,
+      userId: user._id,
+      isAdmin: user.isAdmin,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
