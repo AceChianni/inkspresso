@@ -1,50 +1,39 @@
 // backend/routes/authRoutes.js
+
+// const express = require("express");
+// const router = express.Router();
+// const User = require("../models/User");
+// const bcrypt = require("bcryptjs");
+// const jwt = require("jsonwebtoken");
+// const nodemailer = require("nodemailer");
+// const crypto = require("crypto");
+// const dotenv = require("dotenv");
+
+// dotenv.config();
+
 const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
 const router = express.Router();
+const {
+  registerUser,
+  loginUser,
+  verifyEmail,
+  resetPasswordRequest,
+  resetPassword,
+} = require("../controllers/authController");
 
-// Register new user (with admin capability)
-router.post("/register", async (req, res) => {
-  const { username, email, password, isAdmin } = req.body;
+// Register User
+router.post("/register", registerUser);
 
-  try {
-    // Check if the email is already in use
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      return res.status(400).json({ message: "User already exists" });
-    }
+// Login User
+router.post("/login", loginUser);
 
-    // Hash the password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+// Verify Email
+router.get("/verify/:token", verifyEmail);
 
-    // Create a new user
-    const newUser = new User({
-      username,
-      email,
-      password: hashedPassword,
-      isAdmin: isAdmin || false,
-    });
+// Password Reset Request (username or email)
+router.post("/reset-password-request", resetPasswordRequest);
 
-    // Save the user to the database
-    const user = await newUser.save();
-
-    // Create a JWT token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "30d",
-    });
-
-    res.status(201).json({
-      message: "User registered successfully",
-      token,
-      userId: user._id,
-      isAdmin: user.isAdmin,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+// Reset Password
+router.post("/reset-password/:token", resetPassword);
 
 module.exports = router;
