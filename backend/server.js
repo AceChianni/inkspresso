@@ -10,13 +10,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Connect to MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Connected to MongoDB");
+
+    // Start the server only after successful DB connection
     app.listen(process.env.PORT, () =>
       console.log(`Server running on port ${process.env.PORT}`)
     );
@@ -25,5 +25,5 @@ mongoose
     console.error("Error connecting to MongoDB:", error.message)
   );
 
-// Test route
+// Test Route
 app.get("/", (req, res) => res.send("Inkspresso API is running"));
