@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const authRoutes = require("./routes/authRoutes");
 
 dotenv.config();
 
@@ -27,3 +28,5 @@ mongoose
 
 // Test Route
 app.get("/", (req, res) => res.send("Inkspresso API is running"));
+// Use authentication routes
+app.use("/api/auth", authRoutes);
