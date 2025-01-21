@@ -30,3 +30,7 @@ mongoose
 app.get("/", (req, res) => res.send("Inkspresso API is running"));
 // Use authentication routes
 app.use("/api/auth", authRoutes);
+
+app.get("/api/protected", protect, (req, res) => {
+  res.json({ message: "Access granted", user: req.user });
+});
