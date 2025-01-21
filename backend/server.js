@@ -1,10 +1,12 @@
-// server.js
+// backend/server.js
+
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
+const cartRoutes = require("./routes/cartRoutes");
 
 dotenv.config();
 
@@ -32,6 +34,9 @@ app.use("/api/auth", authRoutes);
 
 // Use the product routes
 app.use("/api/products", productRoutes);
+
+// Use the cart routes
+app.use("/api/cart", cartRoutes);
 
 // Test route
 app.get("/", (req, res) => res.send("Inkspresso API is running"));
