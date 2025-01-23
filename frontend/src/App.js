@@ -1,24 +1,24 @@
 // src/App.js
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+import React, { useState, useEffect } from "react";
+import Navbar from "./components/NavBar";
+import Footer from "./components/Footer";
+import HomePage from "./pages/HomePage";
 import ProductList from "./components/ProductList/ProductList";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import CheckoutPage from "./pages/CheckoutPage";
-import Home from "./pages/Home";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const App = () => {
   return (
     <Router>
+      <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HomePage />} />{" "}
+        {/* HomePage as the default page */}
+        <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/products" element={<ProductList />} />
-        <Route path="/products/:id" element={<ProductDetail />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
       </Routes>
+      <Footer /> {/* Add Footer at the bottom */}
     </Router>
   );
 };

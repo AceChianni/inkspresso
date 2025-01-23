@@ -1,32 +1,28 @@
-// frontend/src/components/ProductList.js
+// src/components/ProductList/ProductList.js
+
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import api from "../../services/api";
+import { fetchProducts } from "../../api/api";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await api.get("/products");
-      setProducts(response.data);
+    const loadProducts = async () => {
+      const productsData = await fetchProducts();
+      setProducts(productsData);
     };
 
-    fetchProducts();
+    loadProducts();
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {products.map((product) => (
-        <div key={product._id} className="card">
-          <img src={product.image} alt={product.name} />
-          <h2>{product.name}</h2>
-          <p>{product.description}</p>
-          <Link to={`/products/${product._id}`} className="btn btn-primary">
-            View Details
-          </Link>
-        </div>
-      ))}
+    <div>
+      <h1>Product List</h1>
+      <ul>
+        {products.map((product) => (
+          <li key={product._id}>{product.name}</li>
+        ))}
+      </ul>
     </div>
   );
 };

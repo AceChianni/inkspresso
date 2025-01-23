@@ -1,30 +1,30 @@
-// src/components/ProductDetail.js
+// src/components/ProductDetail/ProductDetail.js
+
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import api from "../../services/api";
+import { fetchProductById } from "../../api/api";
 
 const ProductDetail = () => {
-  const [product, setProduct] = useState(null);
   const { id } = useParams();
+  const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      const response = await api.get(`/products/${id}`);
-      setProduct(response.data);
+    const loadProduct = async () => {
+      const productData = await fetchProductById(id);
+      setProduct(productData);
     };
 
-    fetchProduct();
+    loadProduct();
   }, [id]);
 
   if (!product) return <div>Loading...</div>;
 
   return (
     <div>
-      <h2>{product.name}</h2>
-      <img src={product.image} alt={product.name} />
+      <h1>{product.name}</h1>
       <p>{product.description}</p>
       <p>Price: ${product.price}</p>
-      <button>Add to Cart</button>
+      <img src={product.imageUrl} alt={product.name} />
     </div>
   );
 };
