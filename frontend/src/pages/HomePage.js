@@ -1,11 +1,22 @@
 // src/pages/HomePage.js
-import React from "react";
+
 import Hero from "../components/Hero";
+import Navbar from "../components/NavBar";
+import Footer from "../components/Footer";
+import { useState } from "react";
 
 const HomePage = () => {
+  const [theme, setTheme] = useState("light");
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
   return (
-    <div className="home-page">
+    <div>
+      <Navbar theme={theme} toggleTheme={toggleTheme} />
       <Hero />
+      <Footer />
     </div>
   );
 };
