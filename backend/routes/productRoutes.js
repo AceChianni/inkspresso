@@ -1,21 +1,26 @@
 // routes/productRoutes.js
 
 const express = require("express");
-const router = express.Router();
+const multer = require("multer");
+const { storage } = require("../utils/cloudinary");
 const { protect, admin } = require("../middleware/authMiddleware");
-const Product = require("../models/Product");
+const { deleteProduct } = require("../controllers/productController");
 
-// Create a new product (Admin only)
-router.post("/", protect, admin, async (req, res) => {
-  const { name, description, price, category, image } = req.body;
+const router = express.Router();
+const upload = multer({ storage });
 
+// Admin: Create a new product with image upload
+router.post("/", protect, admin, upload.single("image"), async (req, res) => {
+  const { name, description, price, category } = req.body;
+  console.log("Request Body:", req.body);
+  console.log("Uploaded file:", req.file);
   try {
     const product = new Product({
       name,
       description,
       price,
       category,
-      image,
+      image: req.file?.path,
     });
 
     const createdProduct = await product.save();
@@ -25,9 +30,9 @@ router.post("/", protect, admin, async (req, res) => {
   }
 });
 
-// Update an existing product (Admin only)
-router.put("/:id", protect, admin, async (req, res) => {
-  const { name, description, price, category, image } = req.body;
+// Admin: Update an existing product with image upload
+router.put("/:id", protect, admin, upload.single("image"), async (req, res) => {
+  const { name, description, price, category } = req.body;
 
   try {
     const product = await Product.findById(req.params.id);
@@ -41,7 +46,7 @@ router.put("/:id", protect, admin, async (req, res) => {
     product.description = description || product.description;
     product.price = price || product.price;
     product.category = category || product.category;
-    product.image = image || product.image;
+    product.image = req.file?.path || product.image;
 
     const updatedProduct = await product.save();
     res.status(200).json(updatedProduct);
@@ -86,7 +91,7 @@ router.get("/", async (req, res) => {
     // Build the filter object
     const filter = {};
     if (category) {
-      filter.category = { $regex: new RegExp(`^${category.trim()}$`, "i") }; // Case-insensitive match
+      filter.category = { $regex: new RegExp(`^${category.trim()}$`, "i") };
     }
     if (minPrice || maxPrice) {
       filter.price = {};
@@ -95,8 +100,8 @@ router.get("/", async (req, res) => {
     }
     if (search) {
       filter.$or = [
-        { name: { $regex: search, $options: "i" } }, // Case-insensitive search in name
-        { description: { $regex: search, $options: "i" } }, // Case-insensitive search in description
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
       ];
     }
 

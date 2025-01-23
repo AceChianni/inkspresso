@@ -1,25 +1,19 @@
 // backend/routes/authRoutes.js
 
-// const express = require("express");
-// const router = express.Router();
-// const User = require("../models/User");
-// const bcrypt = require("bcryptjs");
-// const jwt = require("jsonwebtoken");
-// const nodemailer = require("nodemailer");
-// const crypto = require("crypto");
-// const dotenv = require("dotenv");
-
-// dotenv.config();
-
 const express = require("express");
-const router = express.Router();
+const { protect, admin } = require("../middleware/authMiddleware");
 const {
   registerUser,
   loginUser,
   verifyEmail,
+  resendVerificationEmail,
   resetPasswordRequest,
   resetPassword,
+  makeAdmin,
+  getUsers,
 } = require("../controllers/authController");
+
+const router = express.Router();
 
 // Register User
 router.post("/register", registerUser);
@@ -30,10 +24,19 @@ router.post("/login", loginUser);
 // Verify Email
 router.get("/verify/:token", verifyEmail);
 
+// Resend Verification Email (route for resending the verification email)
+router.post("/resend-verification", resendVerificationEmail);
+
 // Password Reset Request (username or email)
 router.post("/reset-password-request", resetPasswordRequest);
 
 // Reset Password
 router.post("/reset-password/:token", resetPassword);
+
+// Make a user admin (Admin-only route)
+router.put("/make-admin/:userId", protect, admin, makeAdmin);
+
+// Route to get all users (requires admin access)
+router.get("/users", protect, admin, getUsers);
 
 module.exports = router;

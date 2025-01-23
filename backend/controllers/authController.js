@@ -1,34 +1,8 @@
-// backend/controllers/authController.js
-
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const nodemailer = require("nodemailer");
-
-const sendEmail = async (email, subject, text) => {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
-
-  const mailOptions = {
-    from: process.env.SMTP_USER,
-    to: email,
-    subject: subject,
-    text: text,
-  };
-
-  try {
-    await transporter.sendMail(mailOptions);
-    console.log(`Email sent to ${email}`);
-  } catch (error) {
-    console.error("Error sending email:", error);
-  }
-};
+const sendEmail = require("../utils/emailUtils");
+const bcrypt = require("bcryptjs");
 
 // Send verification email
 const sendVerificationEmail = async (userEmail, token) => {
@@ -56,6 +30,7 @@ const registerUser = async (req, res) => {
     // Generate a verification token
     const verificationToken = crypto.randomBytes(20).toString("hex");
     user.verificationToken = verificationToken;
+    user.verificationTokenExpiration = Date.now() + 3600000; // 1 hour expiration
 
     await user.save();
 
@@ -65,6 +40,36 @@ const registerUser = async (req, res) => {
     res.status(201).json({
       message: "User registered. Please verify your email.",
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Resend Verification Email
+const resendVerificationEmail = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({ message: "Account already verified" });
+    }
+
+    // Generate a new verification token
+    const verificationToken = crypto.randomBytes(20).toString("hex");
+    user.verificationToken = verificationToken;
+    user.verificationTokenExpiration = Date.now() + 3600000; // 1 hour expiration
+
+    await user.save();
+
+    // Send the verification email
+    await sendVerificationEmail(user.email, verificationToken);
+
+    res.status(200).json({ message: "Verification email resent." });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -80,8 +85,13 @@ const verifyEmail = async (req, res) => {
         .json({ message: "Invalid or expired verification token." });
     }
 
+    if (Date.now() > user.verificationTokenExpiration) {
+      return res.status(400).json({ message: "Verification token expired" });
+    }
+
     user.isVerified = true;
     user.verificationToken = undefined;
+    user.verificationTokenExpiration = undefined; // Clear expiration
     await user.save();
 
     res.status(200).json({ message: "Account verified successfully." });
@@ -141,7 +151,7 @@ const loginUser = async (req, res) => {
 
 // Password Reset Request with Username or Email
 const resetPasswordRequest = async (req, res) => {
-  const { identifier } = req.body; // Accepts either username or email.
+  const { identifier } = req.body;
 
   try {
     // Find user by username or email
@@ -190,7 +200,7 @@ const resetPassword = async (req, res) => {
         .json({ message: "Invalid or expired reset token." });
     }
 
-    user.password = password;
+    user.password = await bcrypt.hash(password, 10);
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
 
@@ -201,10 +211,47 @@ const resetPassword = async (req, res) => {
   }
 };
 
+// Update user to admin
+const makeAdmin = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.isAdmin = true;
+    await user.save();
+
+    res.status(200).json({ message: "User updated to admin", user });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating user", error: error.message });
+  }
+};
+
+// Get all users
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error retrieving users", error: error.message });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   verifyEmail,
+  resendVerificationEmail,
   resetPasswordRequest,
   resetPassword,
+  makeAdmin,
+  getUsers,
 };
