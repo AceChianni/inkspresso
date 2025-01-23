@@ -1,8 +1,9 @@
-// utils/emailUtils.js
+// backend/utils/emailUtils.js
 
+require("dotenv").config();
 const nodemailer = require("nodemailer");
 
-// Gmail Transporter
+// Gmail Transporter (for production)
 const gmailTransporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -13,8 +14,8 @@ const gmailTransporter = nodemailer.createTransport({
 
 // Mailtrap Transporter (for testing purposes)
 const mailtrapTransporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
+  host: "sandbox.smtp.mailtrap.io",
+  port: 2525,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
@@ -30,8 +31,8 @@ const transporter =
 // Email sending function
 const sendEmail = async (to, subject, text) => {
   const mailOptions = {
-    from: process.env.GMAIL_USER,
-    to,
+    from: "Inkspresso <noreply@inkspresso.com>",
+    to, // Sends email to the dynamic email address
     subject,
     text,
   };
@@ -41,8 +42,20 @@ const sendEmail = async (to, subject, text) => {
     console.log("Email sent: " + info.response);
   } catch (error) {
     console.error("Error sending email: ", error);
-    throw error;
+    throw new Error(`Email send failed: ${error.message}`);
   }
 };
 
-module.exports = sendEmail;
+// Send verification email helper
+const sendVerificationEmail = async (userEmail, token) => {
+  const verificationUrl = `http://localhost:5001/api/auth/verify/${token}`;
+  const subject = "Account Verification";
+  const text = `Please verify your email by clicking on the following link: ${verificationUrl}`;
+
+  await sendEmail(userEmail, subject, text);
+};
+
+module.exports = {
+  sendEmail,
+  sendVerificationEmail,
+};

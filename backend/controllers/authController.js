@@ -1,17 +1,10 @@
+// backend/controllers/authController.js
+
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const sendEmail = require("../utils/emailUtils");
+const { sendVerificationEmail } = require("../utils/emailUtils");
 const bcrypt = require("bcryptjs");
-
-// Send verification email
-const sendVerificationEmail = async (userEmail, token) => {
-  const verificationUrl = `http://localhost:5001/api/auth/verify/${token}`;
-  const subject = "Account Verification";
-  const text = `Please verify your email by clicking on the following link: ${verificationUrl}`;
-
-  await sendEmail(userEmail, subject, text);
-};
 
 // Register User with Email Verification
 const registerUser = async (req, res) => {
