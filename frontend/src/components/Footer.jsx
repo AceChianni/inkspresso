@@ -1,8 +1,8 @@
-// src/components/Footer.js
+// /src/components/Footer.jsx
 
 const Footer = () => {
   return (
-    <footer className="bg-sepia text-cornsilk p-4 text-center">
+    <footer className="bg-primary text-white p-4 text-center">
       <p>&copy; 2025 Inkspresso. All rights reserved.</p>
     </footer>
   );
