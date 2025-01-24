@@ -4,6 +4,10 @@ import PropTypes from "prop-types";
 import Button from "./Button";
 
 export default function ProductCard({ product, handleAddToCart }) {
+  const formattedPrice = product.basePrice
+    ? product.basePrice.toFixed(2)
+    : "Price unavailable"; // Fallback in case basePrice is missing
+
   return (
     <div className="card p-6 border border-neutral rounded-lg shadow-md hover:shadow-lg transition-shadow flex flex-col h-full bg-base-100 dark:bg-base-dark text-base-content dark:text-base-content-dark">
       <img
@@ -19,7 +23,7 @@ export default function ProductCard({ product, handleAddToCart }) {
           {product.description}
         </p>
         <p className="text-lg font-bold mb-4 text-primary dark:text-accent">
-          ${product.price}
+          ${formattedPrice}
         </p>
       </div>
       <button

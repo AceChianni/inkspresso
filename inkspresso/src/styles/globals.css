@@ -1,4 +1,7 @@
 /* globals.css */
+/* @tailwind Directives */
+@import "tailwindcss/preflight";
+@tailwind utilities;
 
 /* Base Styles */
 body {
