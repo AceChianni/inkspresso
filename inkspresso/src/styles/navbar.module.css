@@ -91,9 +91,8 @@ body.light {
 }
 
 /* Hero text styling */
-.hero-text {
-    color: #fef7d5;
-    /* Hero text color */
+.text-hero {
+    color: #FEF7D5;
 }
 
 /* Footer styles */
@@ -101,6 +100,6 @@ body.light {
     background-color: #6a4406;
 }
 
-.text-footer-text {
-    color: #fef7d5;
+body.dark .bg-footer {
+    background-color: #175676;
 }

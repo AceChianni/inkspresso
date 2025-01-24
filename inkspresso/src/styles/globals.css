@@ -59,6 +59,11 @@ body.dark .toggle-btn {
   /* Cornsilk text for dark mode */
 }
 
+/* Hero text color (static for both modes) */
+.text-hero {
+  color: #FEF7D5;
+}
+
 /* Buttons */
 .order-now-btn {
   background-color: #b64c00;
