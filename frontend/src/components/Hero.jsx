@@ -3,7 +3,7 @@
 import Button from "./Button";
 import { useRouter } from "next/router";
 
-const HeroSection = () => {
+const Hero = () => {
   const router = useRouter();
 
   const navigateToMenu = () => {
