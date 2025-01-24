@@ -1,9 +1,15 @@
 // /components/Footer.js
 
-export default function Footer() {
+import styles from "../styles/navbar.module.css";
+
+const Footer = () => {
   return (
-    <footer className="p-4 text-center bg-cornsilk dark:bg-drabDarkBrown dark:text-white">
-      <p>&copy; {new Date().getFullYear()} Inkspresso. All rights reserved.</p>
+    <footer className={`${styles.bgFooter} py-4`}>
+      <div className="w-full text-center text-[#FEF7D5] px-4">
+        <p>&copy; 2025 Inkspresso. All rights reserved.</p>
+      </div>
     </footer>
   );
-}
+};
+
+export default Footer;

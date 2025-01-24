@@ -1,45 +1,160 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* globals.css */
-html,
+
+/* Base Styles */
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
-  box-sizing: border-box;
+  width: 100vw;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+  background-color: #fef7d5;
+  /* Cornsilk (light mode background) */
+  color: #2d2d2d;
+  /* Dark text (light mode) */
 }
 
-/* Default light theme */
-[data-theme='light'] {
-  --primary-bg: #f4e2b4;
-  /* cornsilk */
-  --secondary-bg: #485613;
-  /* darkMossGreen */
-  --accent-color: #f2bc85;
-  /* sunset */
-  --text-color: #6a4406;
-  /* sepia */
+body.dark {
+  background-color: #5c3e2d;
+  /* Cafe Noir (dark mode background) */
+  color: #fef7d5;
+  /* Cornsilk (dark mode text) */
 }
 
-/* Dark theme */
-[data-theme='dark'] {
-  --primary-bg: #6a5a21;
-  /* drabDarkBrown */
-  --secondary-bg: #8b5d2e;
-  /* sealBrown */
-  --accent-color: #9f4814;
-  /* burntOrange */
-  --text-color: #f2bc85;
-  /* sunset */
+html {
+  height: 100%;
+}
+
+/* Layout Helpers */
+.bg-header-footer {
+  background-color: #6a4406;
+  /* Sepia (light mode header/footer) */
+}
+
+body.dark .bg-header-footer {
+  background-color: #175676;
+  /* Lapis (dark mode header/footer) */
+}
+
+.text-light {
+  color: #2d2d2d;
+  /* Dark text (light mode) */
+}
+
+body.dark .text-light {
+  color: #fef7d5;
+  /* Cornsilk text (dark mode) */
+}
+
+/* navbar toggle button */
+.toggle-btn {
+  background-color: transparent;
+  color: #2d2d2d;
+  /* Dark text for light mode */
+  transition: all 0.3s ease;
+  margin-right: 1rem;
+}
+
+body.dark .toggle-btn {
+  color: #fef7d5;
+  /* Cornsilk text for dark mode */
+}
+
+/* Buttons */
+.order-now-btn {
+  background-color: #b64c00;
+  /* Burnt Orange */
+  color: #fff;
+  /* White text for contrast */
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+
+.order-now-btn:hover {
+  background-color: #ffffff;
+  color: #b64c00;
+  /* Burnt orange text on hover */
+}
+
+/* Utility Classes */
+.w-full {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.min-h-screen {
+  min-height: calc(100vh - 80px);
+  /* Ensure content fills the full height minus header/footer */
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.inset-0 {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.bg-black-50 {
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Overlay effect */
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+}
+
+.text-6xl {
+  font-size: 3.75rem;
+}
+
+.leading-tight {
+  line-height: 1.25;
 }
 
 body {
-  background-color: var(--primary-bg);
-  color: var(--text-color);
-}
-
-button {
-  background-color: var(--accent-color);
+  overflow-x: hidden;
 }

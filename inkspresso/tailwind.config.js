@@ -1,5 +1,3 @@
-// tailwind.config.js
-
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -8,14 +6,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        copper: "#d07e3d", // Adjusted Copper
-        cornsilk: "#f4e2b4", // Adjusted Cornsilk
-        sepia: "#6a4406",
-        darkMossGreen: "#485613",
-        burntOrange: "#9f4814", // Adjusted Burnt Orange
-        sunset: "#f2bc85", // Adjusted Sunset
-        sealBrown: "#8b5d2e", // Adjusted Seal Brown
-        drabDarkBrown: "#6a5a21", // Adjusted Drab Dark Brown
+        sepia: "#6A4406", // Sepia
+        lapis: "#175676", // Lapis
+        mossGreen: "#8A9A5B", // Moss Green
+        cornsilk: "#FEF7D5", // Cornsilk
+        cafeNoir: "#5C3E2D", // Cafe Noir
+        burntOrange: "#B64C00", // Burnt Orange
       },
     },
   },

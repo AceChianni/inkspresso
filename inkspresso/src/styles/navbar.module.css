@@ -1,0 +1,106 @@
+/* navbar.module.css */
+
+.navbar {
+    background-color: #6a4406;
+    color: #fef7d5;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbarContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 100%;
+}
+
+.brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fef7d5;
+}
+
+.navLinks {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.navLink {
+    color: #fef7d5;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.navLink:hover {
+    color: #e85a4f;
+}
+
+.themeToggle {
+    background-color: #e85a4f;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+/* Icon styles */
+.icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #fff;
+}
+
+.icon.sun {
+    color: #ffbb33;
+}
+
+.icon.moon {
+    color: #ffffff;
+}
+
+/* For smaller screens */
+@media (max-width: 768px) {
+    .navbarContent {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .themeToggle {
+        margin-top: 0.5rem;
+        /* Space the button away from navbar */
+    }
+}
+
+/* Dark Mode styles */
+body.dark {
+    background-color: #5c3e2d;
+    color: #fef7d5;
+}
+
+/* Light Mode styles */
+body.light {
+    background-color: #8a9a5b;
+    color: #fef7d5;
+}
+
+/* Hero text styling */
+.hero-text {
+    color: #fef7d5;
+    /* Hero text color */
+}
+
+/* Footer styles */
+.bg-footer {
+    background-color: #6a4406;
+}
+
+.text-footer-text {
+    color: #fef7d5;
+}
