@@ -1,0 +1,53 @@
+/* hero.module.css */
+.heroContainer {
+    background-image: url('/coffeeshop.jpg');
+    background-size: cover;
+    background-position: center center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .heroOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .heroContent {
+    z-index: 10;
+    text-align: center;
+    padding: 0 1rem;
+    color: #FEF7D5; /* Light Pale Yellow */
+  }
+  
+  .heroTitle {
+    font-size: 3.75rem; /* 6xl */
+    font-weight: bold;
+  }
+  
+  .heroDescription {
+    margin-top: 1rem;
+    font-size: 1.25rem; /* lg */
+  }
+  
+  .heroButton {
+    margin-top: 1.5rem;
+    padding: 1rem 2rem;
+    background-color: #BE5615; /* Burnt Orange */
+    color: #fff;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .heroButton:hover {
+    background-color: #fff;
+    color: #BE5615; /* Burnt Orange */
+  }
+  

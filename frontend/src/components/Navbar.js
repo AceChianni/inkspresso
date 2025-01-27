@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
-import styles from "../styles/navbar.module.css";
+import styles from "../styles/bars.module.css";
 
 const Navbar = () => {
   const [theme, setTheme] = useState("light");

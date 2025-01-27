@@ -1,6 +1,6 @@
 // /components/Footer.js
 
-import styles from "../styles/navbar.module.css";
+import styles from "../styles/bars.module.css";
 
 const Footer = () => {
   return (
