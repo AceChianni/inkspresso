@@ -29,11 +29,13 @@
   .heroTitle {
     font-size: 3.75rem; /* 6xl */
     font-weight: bold;
+    color: #FEF7D5;
   }
   
   .heroDescription {
     margin-top: 1rem;
     font-size: 1.25rem; /* lg */
+    color: #FEF7D5;
   }
   
   .heroButton {
