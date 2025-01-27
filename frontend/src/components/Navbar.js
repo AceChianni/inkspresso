@@ -27,23 +27,15 @@ const Navbar = () => {
         <div className={styles.brand}>Inkspresso</div>
         <div className={styles.navLinks}>
           {[
-            "Home",
-            "About",
-            "Menu",
-            "Cart",
-            "Contact Us",
-            "Sign In/Sign Up",
+            { name: "Home", path: "/" },
+            { name: "About", path: "/about" },
+            { name: "Menu", path: "/products" },
+            { name: "Cart", path: "/cart" },
+            { name: "Contact Us", path: "/contact" },
+            { name: "Sign In/Sign Up", path: "/signin" },
           ].map((item, idx) => (
-            <Link
-              key={idx}
-              href={
-                item === "Home"
-                  ? "/"
-                  : `/${item.toLowerCase().replace(/ /g, "")}`
-              }
-              className={styles.navLink}
-            >
-              {item}
+            <Link key={idx} href={item.path} className={styles.navLink}>
+              {item.name}
             </Link>
           ))}
         </div>

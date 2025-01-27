@@ -10,7 +10,7 @@ body {
   width: 100vw;
   overflow-x: hidden;
   font-family: Arial, sans-serif;
-  background-color: #FFFFFF; /* White */
+  background-color: #B3BBA4; /* Sage Green */
   color: #485613; /* Muted Green */
 }
 
@@ -33,23 +33,23 @@ body.dark .bg-header-footer {
 }
 
 .text-light {
-  color: #485613; /* Muted Green */
+  color: #FEF7D5; /* Light Pale Yellow */
 }
 
 body.dark .text-light {
-  color: #E9C9B2; /* Warm Beige */
+  color: #FEF7D5; /* Keep Light Pale Yellow for Dark Mode as well */
 }
 
 /* Buttons */
 .order-now-btn {
   background-color: #BE5615; /* Burnt Orange */
-  color: #fff; /* White */
+  color: #FEF7D5; /* Light Pale Yellow */
   border-radius: 9999px;
   transition: all 0.3s ease;
 }
 
 .order-now-btn:hover {
-  background-color: #ffffff;
+  background-color: #FEF7D5; /* Light Pale Yellow */
   color: #BE5615; /* Burnt Orange */
 }
 

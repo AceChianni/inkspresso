@@ -7,10 +7,8 @@ import Footer from "../components/Footer";
 const HomePage = () => {
   return (
     <div>
-      <Navbar />
       <Header />
       <HeroSection />
-      <Footer />
     </div>
   );
 };

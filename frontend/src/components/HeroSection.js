@@ -6,7 +6,7 @@ const HeroSection = () => {
   const router = useRouter();
 
   const navigateToMenu = () => {
-    router.push("/menu");
+    router.push("/products");
   };
 
   return (
@@ -19,11 +19,11 @@ const HeroSection = () => {
       }}
     >
       <div className="absolute inset-0 bg-black-50"></div>
-      <div className="relative z-10 w-full px-4">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-hero">
+      <div className="relative z-10 w-full px-4 text-light"> {/* Added text-light */}
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
           Fuel Your Imagination
         </h1>
-        <p className="mt-4 text-lg md:text-xl lg:text-2xl text-hero">
+        <p className="mt-4 text-lg md:text-xl lg:text-2xl">
           Where the coffee is always fresh and the books are always good.
         </p>
         <button

@@ -16,40 +16,40 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5); /* Keep this for overlay */
   }
   
   .heroContent {
     z-index: 10;
     text-align: center;
     padding: 0 1rem;
-    color: #FEF7D5; /* Light Pale Yellow */
+    color: #FEF7D5; /* Light Pale Yellow - stays same in light and dark modes */
   }
   
   .heroTitle {
     font-size: 3.75rem; /* 6xl */
     font-weight: bold;
-    color: #FEF7D5;
+    color: #FEF7D5; /* Keep text color as Light Pale Yellow */
   }
   
   .heroDescription {
     margin-top: 1rem;
     font-size: 1.25rem; /* lg */
-    color: #FEF7D5;
+    color: #FEF7D5; /* Keep text color as Light Pale Yellow */
   }
   
   .heroButton {
     margin-top: 1.5rem;
     padding: 1rem 2rem;
     background-color: #BE5615; /* Burnt Orange */
-    color: #fff;
+    color: #FEF7D5; /* Light Pale Yellow */
     border-radius: 50px;
     font-weight: 600;
     cursor: pointer;
   }
   
   .heroButton:hover {
-    background-color: #fff;
+    background-color: #FEF7D5; /* Light Pale Yellow */
     color: #BE5615; /* Burnt Orange */
   }
   
