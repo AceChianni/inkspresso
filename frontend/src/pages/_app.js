@@ -1,5 +1,6 @@
 // /pages/_app.js
 
+import { CartProvider } from "../context/CartContext";
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -21,14 +22,50 @@ function MyApp({ Component, pageProps }) {
   };
 
   return (
-    <div data-theme={theme}>
-      <Navbar toggleTheme={toggleTheme} />
-      <main className="pt-20">
-        <Component {...pageProps} />
-      </main>
-      <Footer />
-    </div>
+    <CartProvider>
+      <div data-theme={theme}>
+        <Navbar toggleTheme={toggleTheme} />
+        <main className="pt-20">
+          <Component {...pageProps} />
+        </main>
+        <Footer />
+      </div>
+    </CartProvider>
   );
 }
 
 export default MyApp;
+
+// import { useState, useEffect } from "react";
+// import Navbar from "../components/Navbar";
+// import Footer from "../components/Footer";
+// import { CartProvider } from "@/context/CartContext";
+// import "../styles/globals.css";
+
+// function MyApp({ Component, pageProps }) {
+//   const [theme, setTheme] = useState("light");
+
+//   useEffect(() => {
+//     const savedTheme = localStorage.getItem("theme") || "light";
+//     setTheme(savedTheme);
+//     document.documentElement.setAttribute("data-theme", savedTheme);
+//   }, []);
+
+//   const toggleTheme = (newTheme) => {
+//     setTheme(newTheme);
+//     localStorage.setItem("theme", newTheme);
+//     document.documentElement.setAttribute("data-theme", newTheme);
+//   };
+
+//   return (
+//     <div data-theme={theme}>
+//       <Navbar toggleTheme={toggleTheme} />
+//       <main className="pt-20">
+//         <Component {...pageProps} />
+//       </main>
+//       <Footer />
+//     </div>
+//   );
+// }
+
+// export default MyApp;

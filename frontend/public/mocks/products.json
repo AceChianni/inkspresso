@@ -1,0 +1,46 @@
+[
+  {
+    "name": "Espresso",
+    "description": "A strong and concentrated coffee beverage.",
+    "category": "Beverage",
+    "imageUrl": "/productimages/espresso.jpg",
+    "stock": 10,
+    "sizes": [
+      { "size": "Small", "price": 2.5 },
+      { "size": "Medium", "price": 3.0 },
+      { "size": "Large", "price": 3.5 }
+    ],
+    "_id": 0
+  },
+  {
+    "name": "Cappuccino",
+    "description": "An Italian coffee drink prepared with equal parts espresso, steamed milk, and milk foam.",
+    "category": "Beverage",
+    "imageUrl": "/productimages/cappuccino.jpg",
+    "stock": 5,
+    "sizes": [
+      { "size": "Small", "price": 3.5 },
+      { "size": "Medium", "price": 4.0 },
+      { "size": "Large", "price": 4.5 }
+    ],
+    "_id": 1
+  },
+  {
+    "name": "Croissant",
+    "description": "A buttery, flaky, viennoiserie pastry named for its crescent shape.",
+    "category": "Food",
+    "imageUrl": "/productimages/croissant.jpg",
+    "price": 2.0,
+    "stock": 8,
+    "_id": 2
+  },
+  {
+    "name": "Blueberry Muffin",
+    "description": "A small, sweet baked muffin with freshly picked berries.",
+    "category": "Food",
+    "imageUrl": "/productimages/blueberrymuffin.jpg",
+    "price": 2.5,
+    "stock": 6,
+    "_id": 3
+  }
+]
