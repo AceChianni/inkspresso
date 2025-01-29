@@ -7,26 +7,10 @@ import Footer from "../components/Footer";
 const HomePage = () => {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <HeroSection />
     </div>
   );
 };
 
 export default HomePage;
-
-
-
-
-// import Header from "../components/Header";
-// import HeroSection from "../components/HeroSection";
-
-// const HomePage = () => {
-//   return (
-//     <div>
-//       <HeroSection />
-//     </div>
-//   );
-// };
-
-// export default HomePage;
