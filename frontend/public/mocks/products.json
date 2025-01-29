@@ -3,7 +3,7 @@
     "name": "Espresso",
     "description": "A strong and concentrated coffee beverage.",
     "category": "Beverage",
-    "imageUrl": "/productimages/espresso.jpg",
+    "imageUrl": "/mocks/images/Espresso.jpg",
     "stock": 10,
     "sizes": [
       { "size": "Small", "price": 2.5 },
@@ -16,7 +16,7 @@
     "name": "Cappuccino",
     "description": "An Italian coffee drink prepared with equal parts espresso, steamed milk, and milk foam.",
     "category": "Beverage",
-    "imageUrl": "/productimages/cappuccino.jpg",
+    "imageUrl": "/mocks/images/Cappuccino.jpg",
     "stock": 5,
     "sizes": [
       { "size": "Small", "price": 3.5 },
@@ -29,7 +29,7 @@
     "name": "Croissant",
     "description": "A buttery, flaky, viennoiserie pastry named for its crescent shape.",
     "category": "Food",
-    "imageUrl": "/productimages/croissant.jpg",
+    "imageUrl": "/mocks/images/Croissant.jpg",
     "price": 2.0,
     "stock": 8,
     "_id": 2
@@ -38,7 +38,7 @@
     "name": "Blueberry Muffin",
     "description": "A small, sweet baked muffin with freshly picked berries.",
     "category": "Food",
-    "imageUrl": "/productimages/blueberrymuffin.jpg",
+    "imageUrl": "/mocks/images/bbmuffin.jpg",
     "price": 2.5,
     "stock": 6,
     "_id": 3

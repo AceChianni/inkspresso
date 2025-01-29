@@ -92,7 +92,7 @@ const Navbar = () => {
             { name: "Menu", path: "/products" },
             { name: "Cart", path: "/cart" },
             { name: "Contact Us", path: "/contact" },
-            { name: "Sign In/Sign Up", path: "/signin" },
+            { name: "Sign In", path: "/signin" },
           ].map((item, idx) => (
             <Link key={idx} href={item.path} className={styles.navLink}>
               {item.name}

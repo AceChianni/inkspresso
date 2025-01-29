@@ -1,5 +1,4 @@
 // /pages/cart/index.js
-
 import { useState, useEffect } from 'react';
 import CartItem from '@/components/CartItem';
 import Link from 'next/link';
@@ -58,7 +57,10 @@ export default function CartPage() {
         )}
         {cartItems.length > 0 && (
           <div className="flex flex-col items-end gap-4">
-            <p className="text-lg font-semibold">Total: ${getTotalPrice()}</p>
+            {/* ✅ FIX: Make price text light in dark mode */}
+            <p className="text-lg font-semibold text-gray-900 dark:text-white">
+              Total: ${getTotalPrice()}
+            </p>
             <Link href="/cart/checkout">
               <button className="order-now-btn py-3 px-6 rounded-lg text-lg font-semibold shadow-md transition duration-300 ease-in-out transform hover:bg-accent hover:scale-105 hover:shadow-xl">
                 Checkout

@@ -37,15 +37,6 @@ body.dark .text-light {
   color: #FEF7D5; /* Keep Light Pale Yellow for Dark Mode as well */
 }
 
-/* Dark Mode Specific Styles for Cart Page */
-body.dark .cart-page {
-  color: #E9C9B2; /* Light text for dark mode */
-}
-
-body.dark .cart-item-text {
-  color: #E9C9B2; /* Ensure cart item text is light in dark mode */
-}
-
 /* Buttons */
 .order-now-btn {
   background-color: #BE5615; /* Burnt Orange */

@@ -1,72 +1,105 @@
 // /pages/cart/checkout.js
-
 import { useState, useEffect } from 'react';
-import CartItem from '@/components/CartItem';
 import Link from 'next/link';
 import '@/styles/checkout.module.css';
 
-export default function CartPage() {
+export default function CheckoutPage() {
   const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
       try {
-        setCartItems(JSON.parse(savedCart));
+        const parsedCart = JSON.parse(savedCart);
+        setCartItems(parsedCart);
+        const total = parsedCart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        setTotalPrice(total.toFixed(2));
       } catch (error) {
         console.error('Error loading cart from localStorage', error);
       }
     }
   }, []);
 
-  const handleRemoveFromCart = (productId) => {
-    const updatedCart = cartItems.filter((item) => item._id !== productId);
-    setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-  };
-
-  const handleQuantityChange = (productId, newQuantity) => {
-    const updatedCart = cartItems.map((item) =>
-      item._id === productId ? { ...item, quantity: newQuantity } : item
-    );
-    setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-  };
-
-  const getTotalPrice = () =>
-    cartItems
-      .reduce((total, item) => total + item.price * item.quantity, 0)
-      .toFixed(2);
-
   return (
-    <div className="min-h-screen bg-base-100 text-gray-900 dark:bg-base-dark dark:text-white">
-      <main className="container mx-auto p-8 flex flex-col gap-8">
-        <h1 className="text-3xl font-semibold">Your Cart</h1>
-        {cartItems.length === 0 ? (
-          <p className="text-lg">Your cart is empty.</p>
-        ) : (
-          <div className="flex flex-col gap-6">
-            {cartItems.map((item) => (
-              <CartItem
-                key={item._id}
-                item={item}
-                handleRemoveFromCart={handleRemoveFromCart}
-                handleQuantityChange={handleQuantityChange}
+    <div className="checkout-page container mx-auto py-10 px-6 flex flex-col lg:flex-row gap-8">
+      
+      {/* LEFT: Cart Summary */}
+      <div className="cart-summary w-full lg:w-1/2 bg-white dark:bg-neutral p-6 shadow-md rounded-lg">
+        <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+        <ul className="divide-y divide-gray-300 dark:divide-gray-700">
+          {cartItems.length === 0 ? (
+            <p className="text-gray-600">Your cart is empty.</p>
+          ) : (
+            cartItems.map((item) => (
+              <li key={item._id} className="flex justify-between py-3">
+                <span>{item.name} x{item.quantity}</span>
+                <span>${(item.price * item.quantity).toFixed(2)}</span>
+              </li>
+            ))
+          )}
+        </ul>
+        <div className="flex justify-between font-semibold text-lg mt-4">
+          <span>Total:</span>
+          <span>${totalPrice}</span>
+        </div>
+        <Link href="/cart">
+          <button className="edit-cart-btn mt-4 py-2 px-4 rounded bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600">
+            Edit Cart
+          </button>
+        </Link>
+      </div>
+
+      {/* RIGHT: Payment Section */}
+      <div className="payment-section w-full lg:w-1/2 bg-white dark:bg-neutral p-6 shadow-md rounded-lg">
+        <h2 className="text-xl font-semibold mb-4">Payment</h2>
+        
+        {/* Credit/Debit Card Payment */}
+        <div className="card-payment mb-6">
+          <h3 className="text-lg font-medium mb-2">Credit/Debit Card</h3>
+          <form className="flex flex-col gap-4">
+            <input
+              type="text"
+              placeholder="Cardholder Name"
+              className="input-field"
+              required
+            />
+            <input
+              type="text"
+              placeholder="Card Number"
+              className="input-field"
+              maxLength="16"
+              required
+            />
+            <div className="flex gap-4">
+              <input
+                type="text"
+                placeholder="MM/YY"
+                className="input-field w-1/2"
+                maxLength="5"
+                required
               />
-            ))}
-          </div>
-        )}
-        {cartItems.length > 0 && (
-          <div className="flex flex-col items-end gap-4">
-            <p className="text-lg font-semibold">Total: ${getTotalPrice()}</p>
-            <Link href="/cart/checkout">
-              <button className="bg-primary text-white py-3 px-6 rounded-lg text-lg font-semibold shadow-md transition duration-300 ease-in-out transform hover:bg-accent hover:scale-105 hover:shadow-xl">
-                Checkout
-              </button>
-            </Link>
-          </div>
-        )}
-      </main>
+              <input
+                type="text"
+                placeholder="CVV"
+                className="input-field w-1/2"
+                maxLength="3"
+                required
+              />
+            </div>
+            <button type="submit" className="pay-btn">
+              Pay with Card
+            </button>
+          </form>
+        </div>
+
+        {/* Shopify Payment Option */}
+        <div className="shopify-payment">
+          <h3 className="text-lg font-medium mb-2">Or Pay with Shopify</h3>
+          <button className="shopify-btn">Pay with Shopify</button>
+        </div>
+      </div>
+
     </div>
   );
 }

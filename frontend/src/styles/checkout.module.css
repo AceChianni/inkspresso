@@ -1,85 +1,143 @@
 /* checkout.module.css */
-
-/* Cart Page Styles */
-.cart-page {
-  padding: 2rem;
-  background-color: #f5f5f5;
-  color: #333;
-}
-
-.cart-item {
+/* General Checkout Page Styles */
+.checkout-page {
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
-  border-bottom: 1px solid #ddd;
+  align-items: flex-start;
+  padding: 2rem;
 }
 
-.cart-item-text {
+/* Left: Cart Summary */
+.cart-summary {
   flex: 1;
+  background: #ffffff;
+  color: #333;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.cart-item-price {
+.cart-summary h2 {
+  font-size: 1.5rem;
   font-weight: bold;
+}
+
+.cart-summary ul {
+  list-style: none;
+  padding: 0;
+}
+
+.cart-summary li {
+  font-size: 1rem;
   color: #3c3c3c;
 }
 
-.cart-item-quantity {
-  width: 60px;
-  margin-left: 1rem;
+.total-price {
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 
-.cart-item-remove-btn {
-  background-color: #e74c3c;
-  color: white;
-  padding: 0.5rem;
-  border-radius: 8px;
+/* Edit Cart Button */
+.edit-cart-btn {
+  margin-top: 1rem;
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  text-align: center;
+  background-color: #ddd;
+  color: #333;
+  border-radius: 5px;
   cursor: pointer;
 }
 
-/* Checkout Page Styles */
-.checkout-page {
-  padding: 2rem;
+.edit-cart-btn:hover {
+  background-color: #ccc;
 }
 
-.checkout-summary {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.2rem;
+/* Right: Payment Section */
+.payment-section {
+  flex: 1;
+  background: #ffffff;
+  color: #333;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.payment-section h2 {
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
-.checkout-button {
-  background-color: #2ecc71;
-  color: white;
-  padding: 1rem;
-  font-size: 1.25rem;
-  border-radius: 8px;
+/* Payment Buttons */
+.pay-btn, .shopify-btn {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out;
 }
 
-.checkout-button:hover {
-  background-color: #27ae60;
+/* Pay with Card */
+.pay-btn {
+  background: #3498db;
+  color: white;
 }
 
-/* Dark Mode Styles for Cart/Checkout */
-body.dark .cart-page {
-  background-color: #2c3e50;
-  color: #ecf0f1;
+.pay-btn:hover {
+  background: #2980b9;
 }
 
-body.dark .cart-item {
-  border-bottom: 1px solid #34495e;
+/* Pay with Shopify */
+.shopify-btn {
+  background: #95bf47;
+  color: white;
+  margin-top: 1rem;
 }
 
-body.dark .cart-item-price {
-  color: #ecf0f1;
+.shopify-btn:hover {
+  background: #85a743;
 }
 
-body.dark .checkout-summary {
-  color: #ecf0f1;
+/* DARK MODE FIXES */
+.dark .cart-summary,
+.dark .payment-section {
+  background: #2c3e50;  /* Dark background */
+  color: #ecf0f1;       /* Light text */
 }
 
-body.dark .checkout-button {
-  background-color: #27ae60;
+.dark .cart-summary h2,
+.dark .cart-summary li,
+.dark .total-price,
+.dark .payment-section h2 {
+  color: #ecf0f1;  /* Ensuring readability */
+}
+
+.dark .edit-cart-btn {
+  background-color: #444;
+  color: white;
+}
+
+.dark .edit-cart-btn:hover {
+  background-color: #666;
+}
+
+.dark .pay-btn {
+  background: #1a73e8;
+}
+
+.dark .pay-btn:hover {
+  background: #135dbd;
+}
+
+.dark .shopify-btn {
+  background: #76a143;
+}
+
+.dark .shopify-btn:hover {
+  background: #638936;
 }
