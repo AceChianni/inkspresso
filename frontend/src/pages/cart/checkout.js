@@ -1,39 +1,69 @@
 // /pages/cart/checkout.js
 
-import { useContext } from "react";
-import { CartContext } from "@/context/CartContext";
+import { useState, useEffect } from 'react';
+import CartItem from '@/components/CartItem';
+import Link from 'next/link';
 
-export default function CheckoutPage() {
-  const { cart } = useContext(CartContext);
+export default function CartPage() {
+  const [cartItems, setCartItems] = useState([]);
 
-  const calculateTotal = () =>
-    cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      try {
+        setCartItems(JSON.parse(savedCart));
+      } catch (error) {
+        console.error('Error loading cart from localStorage', error);
+      }
+    }
+  }, []);
+
+  const handleRemoveFromCart = (productId) => {
+    const updatedCart = cartItems.filter((item) => item._id !== productId);
+    setCartItems(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+  };
+
+  const handleQuantityChange = (productId, newQuantity) => {
+    const updatedCart = cartItems.map((item) =>
+      item._id === productId ? { ...item, quantity: newQuantity } : item
+    );
+    setCartItems(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+  };
+
+  const getTotalPrice = () =>
+    cartItems
+      .reduce((total, item) => total + item.price * item.quantity, 0)
+      .toFixed(2);
 
   return (
-    <div className="min-h-screen flex flex-col bg-base-100 dark:bg-base-dark">
-      <header className="bg-secondary text-white p-4">
-        <h2 className="text-2xl text-center">Checkout</h2>
-      </header>
+    <div className="min-h-screen bg-base-100 text-gray-900 dark:bg-base-dark dark:text-white">
       <main className="container mx-auto p-8 flex flex-col gap-8">
-        {cart.length > 0 ? (
-          <div>
-            {cart.map((item) => (
-              <div key={item.id} className="flex justify-between items-center border-b py-4">
-                <img src={item.image} alt={item.name} className="w-16 h-16 rounded" />
-                <div className="flex-1 ml-4">
-                  <p>{item.name} ({item.size})</p>
-                  <p>Qty: {item.quantity}</p>
-                </div>
-                <p className="font-bold">${(item.price * item.quantity).toFixed(2)}</p>
-              </div>
-            ))}
-            <h3 className="text-xl font-semibold mt-4">Total: ${calculateTotal()}</h3>
-            <button className="mt-4 bg-green-500 text-white py-2 px-4 rounded">
-              Place Order
-            </button>
-          </div>
+        <h1 className="text-3xl font-semibold">Your Cart</h1>
+        {cartItems.length === 0 ? (
+          <p className="text-lg">Your cart is empty.</p>
         ) : (
-          <p className="text-center">Your cart is empty.</p>
+          <div className="flex flex-col gap-6">
+            {cartItems.map((item) => (
+              <CartItem
+                key={item._id}
+                item={item}
+                handleRemoveFromCart={handleRemoveFromCart}
+                handleQuantityChange={handleQuantityChange}
+              />
+            ))}
+          </div>
+        )}
+        {cartItems.length > 0 && (
+          <div className="flex flex-col items-end gap-4">
+            <p className="text-lg font-semibold">Total: ${getTotalPrice()}</p>
+            <Link href="/cart/checkout">
+              <button className="bg-primary text-white py-3 px-6 rounded-lg text-lg font-semibold shadow-md transition duration-300 ease-in-out transform hover:bg-accent hover:scale-105 hover:shadow-xl">
+                Checkout
+              </button>
+            </Link>
+          </div>
         )}
       </main>
     </div>
