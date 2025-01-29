@@ -32,6 +32,16 @@ const ProductCard = ({ product }) => {
     }
   }, [notification]);
 
+  // accessibility for screen reader
+  {notification && (
+    <div
+      className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 bg-green-600 text-white rounded-lg shadow-lg z-50 transition-opacity opacity-100 animate-opacity"
+      aria-live="polite"
+    >
+      <p className="text-center">Item added to cart!</p>
+    </div>
+  )}
+  
   return (
     <div className="bg-white border rounded-lg p-4 shadow-lg flex flex-col justify-between dark:bg-gray-800">
       <img
