@@ -19,10 +19,6 @@ body.dark {
   color: #E9C9B2; /* Warm Beige */
 }
 
-html {
-  height: 100%;
-}
-
 /* Layout Helpers */
 .bg-header-footer {
   background-color: #AF7B3A; /* Warm, Earthy Brown */
@@ -32,12 +28,22 @@ body.dark .bg-header-footer {
   background-color: #6B4406; /* Deep Brown */
 }
 
+/* Text Colors */
 .text-light {
   color: #FEF7D5; /* Light Pale Yellow */
 }
 
 body.dark .text-light {
   color: #FEF7D5; /* Keep Light Pale Yellow for Dark Mode as well */
+}
+
+/* Dark Mode Specific Styles for Cart Page */
+body.dark .cart-page {
+  color: #E9C9B2; /* Light text for dark mode */
+}
+
+body.dark .cart-item-text {
+  color: #E9C9B2; /* Ensure cart item text is light in dark mode */
 }
 
 /* Buttons */
@@ -50,6 +56,17 @@ body.dark .text-light {
 
 .order-now-btn:hover {
   background-color: #FEF7D5; /* Light Pale Yellow */
+  color: #BE5615; /* Burnt Orange */
+}
+
+/* Dark Mode Button Styles */
+body.dark .order-now-btn {
+  background-color: #BE5615; /* Burnt Orange */
+  color: #E9C9B2; /* Warm Beige for Dark Mode */
+}
+
+body.dark .order-now-btn:hover {
+  background-color: #E9C9B2; /* Warm Beige */
   color: #BE5615; /* Burnt Orange */
 }
 

@@ -1,0 +1,85 @@
+/* checkout.module.css */
+
+/* Cart Page Styles */
+.cart-page {
+  padding: 2rem;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-item-text {
+  flex: 1;
+}
+
+.cart-item-price {
+  font-weight: bold;
+  color: #3c3c3c;
+}
+
+.cart-item-quantity {
+  width: 60px;
+  margin-left: 1rem;
+}
+
+.cart-item-remove-btn {
+  background-color: #e74c3c;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Checkout Page Styles */
+.checkout-page {
+  padding: 2rem;
+}
+
+.checkout-summary {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.checkout-button {
+  background-color: #2ecc71;
+  color: white;
+  padding: 1rem;
+  font-size: 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.checkout-button:hover {
+  background-color: #27ae60;
+}
+
+/* Dark Mode Styles for Cart/Checkout */
+body.dark .cart-page {
+  background-color: #2c3e50;
+  color: #ecf0f1;
+}
+
+body.dark .cart-item {
+  border-bottom: 1px solid #34495e;
+}
+
+body.dark .cart-item-price {
+  color: #ecf0f1;
+}
+
+body.dark .checkout-summary {
+  color: #ecf0f1;
+}
+
+body.dark .checkout-button {
+  background-color: #27ae60;
+}

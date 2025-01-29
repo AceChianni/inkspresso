@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import CartItem from '@/components/CartItem';
 import Link from 'next/link';
+import '@/styles/checkout.module.css';
 
 export default function CartPage() {
   const [cartItems, setCartItems] = useState([]);
@@ -69,45 +70,3 @@ export default function CartPage() {
     </div>
   );
 }
-
-// import CheckoutForm from '@/components/CheckoutForm';
-// import { useState, useEffect } from 'react';
-
-// export default function CheckoutPage() {
-//   const [cartItems, setCartItems] = useState([]);
-
-//   useEffect(() => {
-//     const savedCart = localStorage.getItem('cart');
-//     if (savedCart) {
-//       try {
-//         setCartItems(JSON.parse(savedCart));
-//       } catch (error) {
-//         console.error('Error loading cart from localStorage', error);
-//       }
-//     }
-//   }, []);
-
-//   const handleBuyNow = () => {
-//     alert('Thank you for your purchase!');
-//     localStorage.removeItem('cart');
-//     setCartItems([]);
-//   };
-
-//   const calculateTotal = () =>
-//     cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
-
-//   return (
-//     <div className="min-h-screen flex flex-col bg-base-100 dark:bg-base-dark">
-//       <header className="bg-secondary text-white p-4">
-//         <h2 className="text-2xl text-center">Checkout</h2>
-//       </header>
-//       <main className="container mx-auto p-8 flex flex-col gap-8">
-//         <CheckoutForm 
-//           cart={cartItems} 
-//           total={calculateTotal()} 
-//           handleBuyNow={handleBuyNow} 
-//         />
-//       </main>
-//     </div>
-//   );
-// }
