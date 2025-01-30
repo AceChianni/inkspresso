@@ -7,7 +7,7 @@ export default function About() {
       {/* Hero Section */}
       <div className="relative w-full h-[300px] md:h-[400px] flex items-center justify-center">
         <Image
-          src="/images/coffee-books-hero.jpg" // Make sure to add an image to /public/images/
+          src="/coffee-books-hero.jpg"
           alt="Cozy bookstore coffee shop"
           layout="fill"
           objectFit="cover"
@@ -22,7 +22,7 @@ export default function About() {
       {/* About Content */}
       <div className="max-w-3xl text-center mt-12">
         <h2 className="text-2xl font-semibold text-emerald-600">Our Story</h2>
-        <p className="mt-4 text-gray-700 dark:text-gray-300">
+        <p className="mt-4 text-[#AF7B3A]-500 dark:text-gray-300">
           Inkspresso was born from a love of coffee and literature, designed to be a cozy
           retreat where book lovers and coffee enthusiasts can come together.
           Whether you're here for a quiet reading nook, a great cup of coffee, or a bit of both,

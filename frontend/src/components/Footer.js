@@ -21,7 +21,7 @@ import styles from "../styles/bars.module.css";
 const Footer = () => {
   return (
     <footer className={`${styles.bgFooter} py-8`}>
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto border-t border-amber-700 px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           {/* Column 1 - Brand & Description */}
           <div>
