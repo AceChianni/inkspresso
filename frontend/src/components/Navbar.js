@@ -28,10 +28,8 @@ const Navbar = () => {
         <div className={styles.navLinks}>
           {[
             { name: "Home", path: "/" },
-            // { name: "About", path: "/about" },
             { name: "Menu", path: "/products" },
             { name: "Cart", path: "/cart" },
-            // { name: "Contact Us", path: "/contact" },
             { name: "Sign In", path: "/sign/signin" },
           ].map((item, idx) => (
             <Link key={idx} href={item.path} className={styles.navLink}>
