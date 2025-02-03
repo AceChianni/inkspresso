@@ -1,20 +1,5 @@
 // /components/Footer.js
 
-// import styles from "../styles/bars.module.css";
-
-// const Footer = () => {
-//   return (
-//     <footer className={`${styles.bgFooter} py-4`}>
-//       <div className="w-full text-center text-[#FEF7D5] px-4">
-//         <p>&copy; 2025 Inkspresso. All rights reserved.</p>
-//       </div>
-//     </footer>
-//   );
-// };
-
-// export default Footer;
-// /components/Footer.js
-
 import Link from "next/link";
 import styles from "../styles/bars.module.css";
 
@@ -55,13 +40,13 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-[#FEF7D5]">Legal</h3>
             <ul className="mt-2 space-y-2">
               <li>
-                <Link href="/terms" className="text-[#AF7B3A]-300 hover:text-orange-600">Terms of Service</Link>
+                <Link href="/legal/terms" className="text-[#AF7B3A]-300 hover:text-orange-600">Terms of Service</Link>
               </li>
               <li>
-                <Link href="/privacy" className="text-[#AF7B3A]-300 hover:text-orange-600">Privacy Policy</Link>
+                <Link href="/legal/privacy" className="text-[#AF7B3A]-300 hover:text-orange-600">Privacy Policy</Link>
               </li>
               <li>
-                <Link href="/faq" className="text-[#AF7B3A]-300 hover:text-orange-600">FAQs</Link>
+                <Link href="/legal/faqs" className="text-[#AF7B3A]-300 hover:text-orange-600">FAQs</Link>
               </li>
             </ul>
           </div>
