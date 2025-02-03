@@ -2,7 +2,7 @@
 
 Welcome to Inkspresso, a cozy and earthy coffee shop e-commerce platform! Inkspresso is a MERN stack-based project designed for managing and selling coffee products, with a focus on seamless user experience and dynamic content. The backend is built with Node.js, Express, and MongoDB, while the frontend leverages Next.js, Tailwind CSS, and DaisyUI.
 
-Live link: [link](https://inkspresso-frontend-demo.vercel.app/)
+Live link: [link](https://inkspresso.vercel.app/)
 
 ## Progress
 
