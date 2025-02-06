@@ -11,7 +11,12 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        console.error("Error parsing stored user", error);
+        localStorage.removeItem("user"); // Clean up invalid stored user data
+      }
     }
   }, []);
 

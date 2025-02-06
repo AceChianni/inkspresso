@@ -2,17 +2,17 @@
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../context/AuthContext";
-import { CartContext } from "../../context/CartContext"; // Import CartContext
+import { CartContext } from "../../context/CartContext";
 import styles from "../../styles/books.module.css";
 
 const CheckoutBooks = () => {
   const [books, setBooks] = useState([]);
   const [query, setQuery] = useState("");
   const { user } = useAuth();
-  const { addToCart, cartItems } = useContext(CartContext); // Use CartContext
+  const { addToCart, cartItems } = useContext(CartContext);
   const router = useRouter();
 
-  // Fetch books from Google Books API
+  // Fetch books from API or your own books data
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -30,11 +30,11 @@ const CheckoutBooks = () => {
   // Handle checkout
   const handleCheckout = () => {
     if (!user) {
-      router.push("/sign/signin");
+      router.push("/sign/signin"); // Redirect to sign-in page if not logged in
     } else if (cartItems.length === 0) {
       alert("Your cart is empty. Add books to the cart first!");
     } else {
-      router.push("/checkout");
+      router.push("/checkout"); // Proceed to checkout if user is logged in and cart has items
     }
   };
 
@@ -69,7 +69,7 @@ const CheckoutBooks = () => {
               {/* Add to Cart Button */}
               <button
                 className="absolute top-2 right-2 rounded-full p-2 bg-blue-500 text-white shadow hover:bg-blue-600"
-                onClick={() => addToCart(book)} // Add book to cart
+                onClick={() => addToCart(book)}
               >
                 {cartItems.some((item) => item.id === book.id) ? "Added" : "+"}
               </button>
@@ -82,7 +82,9 @@ const CheckoutBooks = () => {
 
       {/* Checkout Button */}
       <button
-        className={`mt-6 px-6 py-3 rounded ${user ? "bg-green-500" : "bg-orange-900"} text-white font-bold`}
+        className={`mt-6 px-6 py-3 rounded ${
+          user ? "bg-green-500" : "bg-orange-900"
+        } text-white font-bold`}
         onClick={handleCheckout}
         disabled={cartItems.length === 0}
       >
@@ -94,17 +96,17 @@ const CheckoutBooks = () => {
 
 export default CheckoutBooks;
 
-
-// import { useState, useEffect } from "react";
+// import { useState, useEffect, useContext } from "react";
 // import { useRouter } from "next/router";
 // import { useAuth } from "../../context/AuthContext";
+// import { CartContext } from "../../context/CartContext"; // Import CartContext
 // import styles from "../../styles/books.module.css";
 
 // const CheckoutBooks = () => {
 //   const [books, setBooks] = useState([]);
 //   const [query, setQuery] = useState("");
-//   const [cart, setCart] = useState([]);
 //   const { user } = useAuth();
+//   const { addToCart, cartItems } = useContext(CartContext); // Use CartContext
 //   const router = useRouter();
 
 //   // Fetch books from Google Books API
@@ -122,23 +124,11 @@ export default CheckoutBooks;
 //     fetchBooks();
 //   }, [query]); // Refetch when query changes
 
-//   // Handle adding book to cart
-//   const handleAddToCart = (book) => {
-//     setCart((prevCart) => {
-//       const bookExists = prevCart.some((item) => item.id === book.id);
-//       if (bookExists) {
-//         return prevCart;
-//       } else {
-//         return [...prevCart, book];
-//       }
-//     });
-//   };
-
 //   // Handle checkout
 //   const handleCheckout = () => {
 //     if (!user) {
 //       router.push("/sign/signin");
-//     } else if (cart.length === 0) {
+//     } else if (cartItems.length === 0) {
 //       alert("Your cart is empty. Add books to the cart first!");
 //     } else {
 //       router.push("/checkout");
@@ -162,17 +152,23 @@ export default CheckoutBooks;
 //         {books.length > 0 ? (
 //           books.map((book) => (
 //             <div key={book.id} className={`${styles.bookCard} relative`}>
-//               <img src={book.cover} alt={book.title} className="w-32 h-48 object-cover" />
+//               <img
+//                 src={book.cover}
+//                 alt={book.title}
+//                 className="w-32 h-48 object-cover"
+//               />
 //               <h2 className="text-lg font-semibold">{book.title}</h2>
 //               <p className="text-sm text-gray-600">{book.author}</p>
-//               <p className="text-xs text-gray-500">{book.description.slice(0, 100)}...</p>
+//               <p className="text-xs text-gray-500">
+//                 {book.description.slice(0, 100)}...
+//               </p>
 
 //               {/* Add to Cart Button */}
 //               <button
-//                 className="absolute top-2 right-2 rounded-full p-2"
-//                 onClick={() => handleAddToCart(book)}
+//                 className="absolute top-2 right-2 rounded-full p-2 bg-blue-500 text-white shadow hover:bg-blue-600"
+//                 onClick={() => addToCart(book)} // Add book to cart
 //               >
-//                 +
+//                 {cartItems.some((item) => item.id === book.id) ? "Added" : "+"}
 //               </button>
 //             </div>
 //           ))
@@ -185,7 +181,7 @@ export default CheckoutBooks;
 //       <button
 //         className={`mt-6 px-6 py-3 rounded ${user ? "bg-green-500" : "bg-orange-900"} text-white font-bold`}
 //         onClick={handleCheckout}
-//         disabled={cart.length === 0}
+//         disabled={cartItems.length === 0}
 //       >
 //         {user ? "Proceed to Checkout" : "Sign In to Checkout"}
 //       </button>

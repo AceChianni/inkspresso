@@ -8,7 +8,12 @@ const bcrypt = require("bcryptjs");
 
 // Register User with Email Verification
 const registerUser = async (req, res) => {
-  const { name, username, email, password } = req.body;
+  const { username, email, password } = req.body;
+
+  // Validate all fields
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
 
   try {
     const userExists = await User.findOne({ $or: [{ email }, { username }] });
@@ -18,7 +23,14 @@ const registerUser = async (req, res) => {
         .json({ message: "Email or username already exists" });
     }
 
-    const user = new User({ name, username, email, password });
+    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      username,
+      email,
+      password: hashedPassword,
+    });
 
     // Generate a verification token
     const verificationToken = crypto.randomBytes(20).toString("hex");
@@ -34,7 +46,10 @@ const registerUser = async (req, res) => {
       message: "User registered. Please verify your email.",
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error during user registration:", error);
+    res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 
@@ -64,7 +79,10 @@ const resendVerificationEmail = async (req, res) => {
 
     res.status(200).json({ message: "Verification email resent." });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error while resending verification email:", error);
+    res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 
@@ -89,7 +107,10 @@ const verifyEmail = async (req, res) => {
 
     res.status(200).json({ message: "Account verified successfully." });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error during email verification:", error);
+    res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 
@@ -97,6 +118,7 @@ const verifyEmail = async (req, res) => {
 const loginUser = async (req, res) => {
   const { usernameOrEmail, password } = req.body;
 
+  // Validate input
   if (!usernameOrEmail || !password) {
     return res
       .status(400)
@@ -115,7 +137,7 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const isMatch = await user.matchPassword(password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
@@ -138,7 +160,10 @@ const loginUser = async (req, res) => {
       user: { id: user._id, name: user.name, email: user.email },
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error during login:", error);
+    res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 
@@ -168,11 +193,14 @@ const resetPasswordRequest = async (req, res) => {
     const subject = "Password Reset Request";
     const text = `Hi ${user.name},\n\nTo reset your password, please click the following link:\n\n${resetUrl}\n\nIf you didn't request this, you can ignore this email.`;
 
-    await sendEmail(user.email, subject, text);
+    await sendVerificationEmail(user.email, subject, text);
 
     res.status(200).json({ message: "Password reset email sent." });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error during password reset request:", error);
+    res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 
@@ -200,7 +228,10 @@ const resetPassword = async (req, res) => {
     await user.save();
     res.status(200).json({ message: "Password has been reset successfully." });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error during password reset:", error);
+    res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again." });
   }
 };
 
@@ -220,6 +251,7 @@ const makeAdmin = async (req, res) => {
 
     res.status(200).json({ message: "User updated to admin", user });
   } catch (error) {
+    console.error("Error updating user to admin:", error);
     res
       .status(500)
       .json({ message: "Error updating user", error: error.message });
@@ -232,6 +264,7 @@ const getUsers = async (req, res) => {
     const users = await User.find();
     res.status(200).json(users);
   } catch (error) {
+    console.error("Error retrieving users:", error);
     res
       .status(500)
       .json({ message: "Error retrieving users", error: error.message });
