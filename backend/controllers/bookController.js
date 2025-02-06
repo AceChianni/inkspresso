@@ -1,10 +1,10 @@
 // /controllers/bookController.js
-import axios from "axios";
-import Book from "../models/Book.js";
-import User from "../models/User.js";
+const axios = require("axios");
+const Book = require("../models/Book");
+const User = require("../models/User");
 
 // Get all books from MongoDB
-export const getAllBooks = async (req, res) => {
+const getAllBooks = async (req, res) => {
   try {
     const books = await Book.find();
     res.json(books);
@@ -14,7 +14,7 @@ export const getAllBooks = async (req, res) => {
 };
 
 // Search books (local + Google Books API)
-export const searchBooks = async (req, res) => {
+const searchBooks = async (req, res) => {
   try {
     const { query } = req.query;
     let books = await Book.find({
@@ -45,7 +45,7 @@ export const searchBooks = async (req, res) => {
 };
 
 // Get book details by ID
-export const getBookById = async (req, res) => {
+const getBookById = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
     if (!book) return res.status(404).json({ message: "Book not found" });
@@ -56,7 +56,7 @@ export const getBookById = async (req, res) => {
 };
 
 // Add to wishlist
-export const addToWishlist = async (req, res) => {
+const addToWishlist = async (req, res) => {
   try {
     const { userId, bookId } = req.body;
     const user = await User.findById(userId);
@@ -75,7 +75,7 @@ export const addToWishlist = async (req, res) => {
 };
 
 // Remove from wishlist
-export const removeFromWishlist = async (req, res) => {
+const removeFromWishlist = async (req, res) => {
   try {
     const { userId, bookId } = req.body;
     const user = await User.findById(userId);
@@ -85,40 +85,50 @@ export const removeFromWishlist = async (req, res) => {
     user.wishlist = user.wishlist.filter((id) => id.toString() !== bookId);
     await user.save();
 
-    res.json({ message: "Book removed from wishlist", wishlist: user.wishlist });
+    res.json({
+      message: "Book removed from wishlist",
+      wishlist: user.wishlist,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
 };
 
 // Checkout a book (limit: 3 books per user)
-export const checkoutBook = async (req, res) => {
+const checkoutBook = async (req, res) => {
   try {
     const { userId } = req.body;
     const user = await User.findById(userId).populate("checkedOutBooks");
     const book = await Book.findById(req.params.id);
 
-    if (!user || !book) return res.status(404).json({ message: "User or book not found" });
-    if (user.checkedOutBooks.length >= 3) return res.status(400).json({ message: "Checkout limit reached" });
+    if (!user || !book)
+      return res.status(404).json({ message: "User or book not found" });
+    if (user.checkedOutBooks.length >= 3)
+      return res.status(400).json({ message: "Checkout limit reached" });
 
     user.checkedOutBooks.push(book._id);
     await user.save();
 
-    res.json({ message: "Book checked out", checkedOutBooks: user.checkedOutBooks });
+    res.json({
+      message: "Book checked out",
+      checkedOutBooks: user.checkedOutBooks,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
 };
 
 // Return a book
-export const returnBook = async (req, res) => {
+const returnBook = async (req, res) => {
   try {
     const { userId, bookId } = req.body;
     const user = await User.findById(userId);
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    user.checkedOutBooks = user.checkedOutBooks.filter((id) => id.toString() !== bookId);
+    user.checkedOutBooks = user.checkedOutBooks.filter(
+      (id) => id.toString() !== bookId
+    );
     await user.save();
 
     res.json({ message: "Book returned successfully" });
@@ -127,56 +137,12 @@ export const returnBook = async (req, res) => {
   }
 };
 
-// import Book from '../models/Book.js';
-
-// // Get all books
-// export const getAllBooks = async (req, res) => {
-//   try {
-//     const books = await Book.find();
-//     res.json(books);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server Error' });
-//   }
-// };
-
-// // Search books by title or author
-// export const searchBooks = async (req, res) => {
-//   try {
-//     const { query } = req.query;
-//     const books = await Book.find({
-//       $or: [
-//         { title: new RegExp(query, 'i') },
-//         { author: new RegExp(query, 'i') }
-//       ]
-//     });
-//     res.json(books);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server Error' });
-//   }
-// };
-
-// // Get book details by ID
-// export const getBookById = async (req, res) => {
-//   try {
-//     const book = await Book.findById(req.params.id);
-//     if (!book) return res.status(404).json({ message: 'Book not found' });
-//     res.json(book);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server Error' });
-//   }
-// };
-
-// // Checkout a book
-// export const checkoutBook = async (req, res) => {
-//   try {
-//     const book = await Book.findById(req.params.id);
-//     if (!book || book.availableCopies <= 0)
-//       return res.status(400).json({ message: 'Book not available' });
-
-//     book.availableCopies -= 1;
-//     await book.save();
-//     res.json({ message: 'Book checked out successfully', book });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server Error' });
-//   }
-// };
+module.exports = {
+  getAllBooks,
+  getBookById,
+  searchBooks,
+  checkoutBook,
+  returnBook,
+  addToWishlist,
+  removeFromWishlist,
+};
