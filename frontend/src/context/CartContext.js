@@ -1,5 +1,4 @@
 // /context/CartContext.js
-
 import { createContext, useState, useEffect } from "react";
 
 // Create CartContext
@@ -52,8 +51,21 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("cart", JSON.stringify(updatedCart)); // Save to localStorage
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem("cart"); // Clear cart from localStorage
+  };
+
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity }}>
+    <CartContext.Provider
+      value={{
+        cartItems,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
