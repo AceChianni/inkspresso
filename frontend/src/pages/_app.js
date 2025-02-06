@@ -1,4 +1,4 @@
-// // /pages/_app.js
+// /pages/_app.js
 
 // import { CartProvider } from "../context/CartContext";
 // import { useState, useEffect } from "react";
@@ -28,16 +28,14 @@
 //         <main className="pt-20">
 //           <Component {...pageProps} />
 //         </main>
-//         <Footer theme={theme} toggleTheme={toggleTheme} />
+//         <Footer />
 //       </div>
 //     </CartProvider>
 //   );
 // }
 
 // export default MyApp;
-
-// /pages/_app.js
-
+import { AuthProvider } from "../context/AuthContext";
 import { CartProvider } from "../context/CartContext";
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
@@ -60,15 +58,17 @@ function MyApp({ Component, pageProps }) {
   };
 
   return (
-    <CartProvider>
-      <div data-theme={theme}>
-        <Navbar toggleTheme={toggleTheme} />
-        <main className="pt-20">
-          <Component {...pageProps} />
-        </main>
-        <Footer />
-      </div>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <div data-theme={theme}>
+          <Navbar toggleTheme={toggleTheme} />
+          <main className="pt-20">
+            <Component {...pageProps} />
+          </main>
+          <Footer />
+        </div>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
