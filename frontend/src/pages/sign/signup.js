@@ -7,6 +7,7 @@ export default function SignUp() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(""); // Added state for success message
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = async (e) => {
@@ -19,6 +20,7 @@ export default function SignUp() {
 
     setLoading(true);
     setError(""); // Reset previous errors
+    setSuccess(""); // Reset previous success messages
 
     try {
       const response = await fetch("http://localhost:5001/api/auth/signup", {
@@ -32,7 +34,8 @@ export default function SignUp() {
       const data = await response.json();
 
       if (response.ok) {
-        // Handle successful signup, e.g., redirect or display success message
+        // Handle successful signup, display success message
+        setSuccess(data.message);
         console.log("User signed up successfully:", data);
       } else {
         setError(data.message || "Failed to sign up.");
@@ -53,7 +56,8 @@ export default function SignUp() {
       >
         <h2 className="text-2xl font-semibold mb-4">Sign Up</h2>
         {error && <div className="text-red-500 mb-4">{error}</div>}
-
+        {success && <div className="text-green-500 mb-4">{success}</div>}{" "}
+        {/* Success message */}
         <div className="mb-4">
           <label
             htmlFor="email"
@@ -71,7 +75,6 @@ export default function SignUp() {
             required
           />
         </div>
-
         <div className="mb-4">
           <label
             htmlFor="username"
@@ -89,7 +92,6 @@ export default function SignUp() {
             required
           />
         </div>
-
         <div className="mb-6">
           <label
             htmlFor="password"
@@ -107,7 +109,6 @@ export default function SignUp() {
             required
           />
         </div>
-
         <button
           type="submit"
           className="w-full bg-emerald-600 text-white py-2 rounded-md hover:bg-orange-900"
@@ -115,13 +116,6 @@ export default function SignUp() {
         >
           {loading ? "Signing Up..." : "Sign Up"}
         </button>
-
-        <div className="mt-4 text-center">
-          <span className="text-gray-600">Already have an account? </span>
-          <Link href="/sign/signin" className="text-orange-600 hover:underline">
-            Sign In
-          </Link>
-        </div>
       </form>
     </div>
   );
