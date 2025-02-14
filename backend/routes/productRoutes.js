@@ -5,6 +5,7 @@ const multer = require("multer");
 const { storage } = require("../utils/cloudinary");
 const { protect, admin } = require("../middleware/authMiddleware");
 const { deleteProduct } = require("../controllers/productController");
+const Product = require("../models/Product");
 
 const router = express.Router();
 const upload = multer({ storage });

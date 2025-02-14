@@ -1,20 +1,22 @@
 // /pages/products/[id].js
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const ProductDetails = () => {
   const router = useRouter();
-  const { id } = router.query;  // Get product ID from the URL
+  const { id } = router.query; // Get product ID from the URL
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
     if (!id) return; // Wait for the ID to be available
 
     // Fetching product details from your backend API
-    fetch(`/api/products/${id}`) // Adjust the API endpoint as needed
+    fetch(`/api/products/${id}`)
       .then((response) => response.json())
       .then((data) => setProduct(data))
-      .catch((error) => console.error('Error fetching product details:', error));
+      .catch((error) =>
+        console.error("Error fetching product details:", error)
+      );
   }, [id]);
 
   if (!product) return <p>Loading...</p>;
@@ -31,8 +33,10 @@ const ProductDetails = () => {
         <div className="ml-0 md:ml-6">
           <p className="mb-4">{product.description}</p>
           <p className="text-lg font-semibold mb-4">${product.price}</p>
-          {/* You can add options like size, quantity, etc., here */}
-          <button className="bg-blue-600 text-white px-4 py-2 rounded">Add to Cart</button>
+          {/* add options like size, quantity, etc., here */}
+          <button className="bg-blue-600 text-white px-4 py-2 rounded">
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>

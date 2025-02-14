@@ -1,11 +1,12 @@
 // pages/sign/signin.js
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAuth } from "../../context/AuthContext";
 
 export default function SignIn() {
+  const { user, login } = useAuth();
   const [emailOrUsername, setEmailOrUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -49,7 +50,7 @@ export default function SignIn() {
         setError(data.message || "Something went wrong. Please try again.");
       }
     } catch (error) {
-      console.error("Error during sign-in:", error);
+      console.error("Error during sign-in:", error.response || error.message);
       setError("An error occurred. Please try again later.");
     }
   };
