@@ -1,4 +1,5 @@
 // backend/routes/authRoutes.js
+
 const express = require("express");
 const { protect, admin } = require("../middleware/authMiddleware");
 const {
@@ -18,7 +19,7 @@ const router = express.Router();
 router.post("/signup", registerUser);
 
 // Login User
-router.post("/login", loginUser);
+router.post("/signin", loginUser);
 
 // Verify Email
 router.get("/verify/:token", verifyEmail);
