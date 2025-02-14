@@ -59,7 +59,8 @@ const ManageProducts = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
+    if (!window.confirm("Are you sure you want to delete this product?"))
+      return;
 
     try {
       await axios.delete(`/api/products/${id}`, {
@@ -74,7 +75,11 @@ const ManageProducts = () => {
   const handleEditClick = async (id) => {
     try {
       const { data } = await axios.get(`/api/products/${id}`);
-      setFormData({ name: data.name, price: data.price, description: data.description });
+      setFormData({
+        name: data.name,
+        price: data.price,
+        description: data.description,
+      });
       setIsEditing(true);
       router.push(`/admin/manage-products?id=${id}`); // Keep the URL updated with ID
     } catch (error) {
@@ -84,16 +89,23 @@ const ManageProducts = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">{isEditing ? "Edit Product" : "Manage Products"}</h1>
+      <h1 className="text-2xl font-bold mb-4">
+        {isEditing ? "Edit Product" : "Manage Products"}
+      </h1>
 
-      <button onClick={() => router.push("/admin/manage-products")} className="bg-green-500 text-white p-2 rounded mb-4">
+      <button
+        onClick={() => router.push("/admin/manage-products")}
+        className="bg-green-500 text-white p-2 rounded mb-4"
+      >
         {isEditing ? "Cancel" : "Add Product"}
       </button>
 
       {isEditing || !router.query.id ? (
         <form onSubmit={handleSubmit} className="mb-6">
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Product Name</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Product Name
+            </label>
             <input
               type="text"
               name="name"
@@ -104,7 +116,9 @@ const ManageProducts = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Price</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Price
+            </label>
             <input
               type="number"
               name="price"
@@ -115,7 +129,9 @@ const ManageProducts = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Description</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
             <textarea
               name="description"
               value={description}
@@ -124,10 +140,7 @@ const ManageProducts = () => {
               required
             />
           </div>
-          <button
-            type="submit"
-            className="bg-blue-500 text-white p-2 rounded"
-          >
+          <button type="submit" className="bg-blue-500 text-white p-2 rounded">
             {isEditing ? "Update Product" : "Add Product"}
           </button>
         </form>
@@ -147,10 +160,16 @@ const ManageProducts = () => {
               <td className="p-2 border">{product.name}</td>
               <td className="p-2 border">${product.price}</td>
               <td className="p-2 border">
-                <button onClick={() => handleEditClick(product._id)} className="bg-blue-500 text-white p-1 rounded mr-2">
+                <button
+                  onClick={() => handleEditClick(product._id)}
+                  className="bg-blue-500 text-white p-1 rounded mr-2"
+                >
                   Edit
                 </button>
-                <button onClick={() => handleDelete(product._id)} className="bg-red-500 text-white p-1 rounded">
+                <button
+                  onClick={() => handleDelete(product._id)}
+                  className="bg-red-500 text-white p-1 rounded"
+                >
                   Delete
                 </button>
               </td>
