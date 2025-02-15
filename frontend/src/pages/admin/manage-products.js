@@ -1,7 +1,6 @@
 // /pages/admin/manage-products.js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 
 const ManageProducts = () => {
@@ -17,16 +16,32 @@ const ManageProducts = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   // Fetch all products with pagination & sorting
+  // const fetchProducts = async () => {
+  //   try {
+  //     const response = await fetch("/api/products");
+  //     console.log("Response Status:", response.status);
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch products");
+  //     }
+  //     const data = await response.json();
+  //     setProducts(data);
+  //   } catch (error) {
+  //     console.error("Failed to fetch products:", error.message);
+  //   }
+  // };
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get("/api/products");
-      return data;
+      const res = await fetch("/api/products");
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error("API Error:", errorData); // Log the API error
+        throw new Error(errorData.message || "Failed to fetch products");
+      }
+      const data = await res.json();
+      console.log("Products fetched successfully:", data); // Log fetched data
+      setProducts(data);
     } catch (error) {
-      console.error(
-        "Failed to fetch products:",
-        error.response?.data || error.message
-      );
-      throw error;
+      console.error("Error in fetching products:", error); // Detailed error log
     }
   };
 
@@ -35,7 +50,11 @@ const ManageProducts = () => {
     if (!router.query.id) return;
     const fetchProduct = async () => {
       try {
-        const { data } = await axios.get(`/api/products/${router.query.id}`);
+        const response = await fetch(`/api/products/${router.query.id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch product");
+        }
+        const data = await response.json();
         setFormData({
           name: data.name,
           price: data.price,
@@ -43,7 +62,7 @@ const ManageProducts = () => {
         });
         setIsEditing(true);
       } catch (error) {
-        console.error("Failed to fetch product", error);
+        console.error("Failed to fetch product", error.message);
       }
     };
     fetchProduct();
@@ -72,34 +91,50 @@ const ManageProducts = () => {
       const config = {
         headers: {
           Authorization: `Bearer ${user.token}`,
-          "Content-Type": "multipart/form-data",
         },
       };
+      let response;
       if (isEditing) {
-        await axios.put(
-          `/api/products/${router.query.id}`,
-          formDataObj,
-          config
-        );
+        response = await fetch(`/api/products/${router.query.id}`, {
+          method: "PUT",
+          body: formDataObj,
+          headers: config.headers,
+        });
       } else {
-        await axios.post("/api/products", formDataObj, config);
+        response = await fetch("/api/products", {
+          method: "POST",
+          body: formDataObj,
+          headers: config.headers,
+        });
       }
+      console.log("Response Status:", response.status);
+
+      if (!response.ok) {
+        throw new Error("Failed to submit product");
+      }
+
       resetForm();
       fetchProducts();
     } catch (error) {
-      console.error("Failed to submit product", error);
+      console.error("Failed to submit product", error.message);
     }
   };
 
   // Handle delete product
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/products/${id}`, {
-        headers: { Authorization: `Bearer ${user.token}` },
+      const response = await fetch(`/api/products/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
       });
+      if (!response.ok) {
+        throw new Error("Failed to delete product");
+      }
       fetchProducts();
     } catch (error) {
-      console.error("Failed to delete product", error);
+      console.error("Failed to delete product", error.message);
     }
   };
 
@@ -218,5 +253,6 @@ const ManageProducts = () => {
     </div>
   );
 };
+console.log("Backend URL:", process.env.NEXT_PUBLIC_BACKEND_URL);
 
 export default ManageProducts;
