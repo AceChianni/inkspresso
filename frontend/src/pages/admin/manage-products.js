@@ -14,21 +14,6 @@ const ManageProducts = () => {
     image: null,
   });
   const [isEditing, setIsEditing] = useState(false);
-
-  // Fetch all products with pagination & sorting
-  // const fetchProducts = async () => {
-  //   try {
-  //     const response = await fetch("/api/products");
-  //     console.log("Response Status:", response.status);
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch products");
-  //     }
-  //     const data = await response.json();
-  //     setProducts(data);
-  //   } catch (error) {
-  //     console.error("Failed to fetch products:", error.message);
-  //   }
-  // };
   const fetchProducts = async () => {
     try {
       const res = await fetch("/api/products");

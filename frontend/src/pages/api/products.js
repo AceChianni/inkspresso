@@ -1,9 +1,18 @@
 // /pages/api/products.js
+require("dotenv").config(); // Load environment variables
+console.log("NEXT_PUBLIC_BACKEND_URL:", process.env.NEXT_PUBLIC_BACKEND_URL);
+
 export default async function handler(req, res) {
   const { category, sortBy, search, minPrice, maxPrice, page, limit } =
     req.query;
 
   console.log("Received query parameters:", req.query); // Check incoming request
+
+  console.log("ENV BACKEND_URL:", process.env.BACKEND_URL);
+  console.log(
+    "ENV NEXT_PUBLIC_BACKEND_URL:",
+    process.env.NEXT_PUBLIC_BACKEND_URL
+  );
 
   if (!process.env.NEXT_PUBLIC_BACKEND_URL) {
     console.error("Backend URL is not defined.");
