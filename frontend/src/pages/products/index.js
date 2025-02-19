@@ -24,24 +24,21 @@ const MenuPage = () => {
         ];
         setCategories(uniqueCategories);
       })
-      .catch((error) => console.error("Error fetching products:", error));
+      .catch((error) => console.error(error));
   }, []);
 
-  // Handle Category Filter
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
     setCurrentPage(1);
     filterProducts(category, searchQuery);
   };
 
-  // Handle Search
   const handleSearch = (query) => {
     setSearchQuery(query);
     setCurrentPage(1);
     filterProducts(selectedCategory, query);
   };
 
-  // Filter products based on category and search query
   const filterProducts = (category, query) => {
     let updatedProducts = products;
 
@@ -60,13 +57,11 @@ const MenuPage = () => {
     setFilteredProducts(updatedProducts);
   };
 
-  // Handle Items Per Page Change
   const handleItemsPerPageChange = (value) => {
     setItemsPerPage(Number(value));
     setCurrentPage(1);
   };
 
-  // Pagination Logic
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const paginatedProducts = filteredProducts.slice(
     (currentPage - 1) * itemsPerPage,
@@ -77,9 +72,7 @@ const MenuPage = () => {
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold text-center mb-4">Menu</h1>
 
-      {/* Filters Section */}
       <div className="flex flex-col md:flex-row justify-between mb-4 space-y-2 md:space-y-0">
-        {/* Category Filter Dropdown */}
         <select
           value={selectedCategory}
           onChange={(e) => handleCategoryChange(e.target.value)}
@@ -93,7 +86,6 @@ const MenuPage = () => {
           ))}
         </select>
 
-        {/* Search Bar */}
         <input
           type="text"
           placeholder="Search product..."
@@ -102,7 +94,6 @@ const MenuPage = () => {
           className="p-2 border rounded w-full md:w-1/3"
         />
 
-        {/* Items Per Page Dropdown */}
         <select
           value={itemsPerPage}
           onChange={(e) => handleItemsPerPageChange(e.target.value)}
@@ -114,7 +105,6 @@ const MenuPage = () => {
         </select>
       </div>
 
-      {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {paginatedProducts.length === 0 ? (
           <div>No products found.</div>
@@ -129,24 +119,21 @@ const MenuPage = () => {
         )}
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex justify-center mt-6 space-x-2">
+      <div className="flex justify-center mt-6">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          className="px-4 py-2 bg-gray-300 rounded-l"
           disabled={currentPage === 1}
-          className="px-3 py-1 border rounded disabled:opacity-50"
         >
-          Prev
+          Previous
         </button>
-        <span className="px-3 py-1 border rounded">
-          Page {currentPage} of {totalPages}
-        </span>
+        <span className="px-4 py-2">{currentPage}</span>
         <button
           onClick={() =>
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
+          className="px-4 py-2 bg-gray-300 rounded-r"
           disabled={currentPage === totalPages}
-          className="px-3 py-1 border rounded disabled:opacity-50"
         >
           Next
         </button>
@@ -172,7 +159,7 @@ export default MenuPage;
 //   const { addToCart } = useContext(CartContext);
 
 //   useEffect(() => {
-//     fetch("/mocks/products.json")
+//     fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products`)
 //       .then((res) => res.json())
 //       .then((data) => {
 //         setProducts(data);

@@ -8,7 +8,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    if (!id) return; // Wait for the ID to be available
+    if (!id) return;
 
     // Fetching product details from your backend API
     fetch(`/api/products/${id}`)
