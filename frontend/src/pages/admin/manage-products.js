@@ -1,4 +1,3 @@
-// /pages/admin/manage-products.js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/context/AuthContext";
@@ -14,17 +13,8 @@ const ManageProducts = () => {
     image: null,
   });
   const [isEditing, setIsEditing] = useState(false);
+  const [editProductId, setEditProductId] = useState(null);
 
-  // const fetchProducts = async () => {
-  //   try {
-  //     const res = await fetch("/api/products");
-  //     if (!res.ok) throw new Error("Failed to fetch products");
-  //     const data = await res.json();
-  //     setProducts(data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
   const fetchProducts = async () => {
     try {
       const res = await fetch("/api/products");
@@ -37,26 +27,6 @@ const ManageProducts = () => {
   };
 
   useEffect(() => {
-    if (!router.query.id) return;
-    const fetchProduct = async () => {
-      try {
-        const response = await fetch(`/api/products/${router.query.id}`);
-        if (!response.ok) throw new Error("Failed to fetch product");
-        const data = await response.json();
-        setFormData({
-          name: data.name,
-          price: data.price,
-          description: data.description,
-        });
-        setIsEditing(true);
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
-    fetchProduct();
-  }, [router.query.id]);
-
-  useEffect(() => {
     if (user === undefined) return;
     if (!user || !user.isAdmin) {
       router.push("/");
@@ -64,6 +34,16 @@ const ManageProducts = () => {
       fetchProducts();
     }
   }, [user]);
+
+  const handleEditClick = (product) => {
+    setFormData({
+      name: product.name,
+      price: product.price,
+      description: product.description,
+    });
+    setEditProductId(product._id);
+    setIsEditing(true);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,30 +54,25 @@ const ManageProducts = () => {
     if (formData.image) formDataObj.append("image", formData.image);
 
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
       let response;
       if (isEditing) {
-        response = await fetch(`/api/products/${router.query.id}`, {
+        response = await fetch(`/api/products/${editProductId}`, {
           method: "PUT",
           body: formDataObj,
-          headers: config.headers,
+          headers: { Authorization: `Bearer ${user.token}` },
         });
       } else {
         response = await fetch("/api/products", {
           method: "POST",
           body: formDataObj,
-          headers: config.headers,
+          headers: { Authorization: `Bearer ${user.token}` },
         });
       }
 
       if (!response.ok) throw new Error("Failed to submit product");
 
       resetForm();
-      fetchProducts();
+      fetchProducts(); // Refresh the list
     } catch (error) {
       console.error(error.message);
     }
@@ -107,19 +82,13 @@ const ManageProducts = () => {
     try {
       const response = await fetch(`/api/products/${id}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: { Authorization: `Bearer ${user.token}` },
       });
       if (!response.ok) throw new Error("Failed to delete product");
       fetchProducts();
     } catch (error) {
       console.error(error.message);
     }
-  };
-
-  const handleEditClick = (product) => {
-    router.push(`/admin/manage-products?id=${product._id}`);
   };
 
   const handleChange = (e) => {
@@ -132,8 +101,8 @@ const ManageProducts = () => {
 
   const resetForm = () => {
     setIsEditing(false);
+    setEditProductId(null);
     setFormData({ name: "", price: "", description: "", image: null });
-    router.push("/admin/manage-products");
   };
 
   return (
@@ -230,6 +199,7 @@ const ManageProducts = () => {
 
 export default ManageProducts;
 
+// /pages/admin/manage-products.js
 // import { useState, useEffect } from "react";
 // import { useRouter } from "next/router";
 // import { useAuth } from "@/context/AuthContext";
@@ -245,31 +215,24 @@ export default ManageProducts;
 //     image: null,
 //   });
 //   const [isEditing, setIsEditing] = useState(false);
+
 //   const fetchProducts = async () => {
 //     try {
 //       const res = await fetch("/api/products");
-//       if (!res.ok) {
-//         const errorData = await res.json();
-//         console.error("API Error:", errorData); // Log the API error
-//         throw new Error(errorData.message || "Failed to fetch products");
-//       }
+//       if (!res.ok) throw new Error("Failed to fetch products");
 //       const data = await res.json();
-//       console.log("Products fetched successfully:", data); // Log fetched data
-//       setProducts(data);
+//       setProducts(data.products || []);
 //     } catch (error) {
-//       console.error("Error in fetching products:", error); // Detailed error log
+//       console.error(error);
 //     }
 //   };
 
-//   // Fetch product details if editing
 //   useEffect(() => {
 //     if (!router.query.id) return;
 //     const fetchProduct = async () => {
 //       try {
 //         const response = await fetch(`/api/products/${router.query.id}`);
-//         if (!response.ok) {
-//           throw new Error("Failed to fetch product");
-//         }
+//         if (!response.ok) throw new Error("Failed to fetch product");
 //         const data = await response.json();
 //         setFormData({
 //           name: data.name,
@@ -278,15 +241,14 @@ export default ManageProducts;
 //         });
 //         setIsEditing(true);
 //       } catch (error) {
-//         console.error("Failed to fetch product", error.message);
+//         console.error(error.message);
 //       }
 //     };
 //     fetchProduct();
 //   }, [router.query.id]);
 
-//   // Handle authentication & authorization
 //   useEffect(() => {
-//     if (user === undefined) return; // Wait for auth to load
+//     if (user === undefined) return;
 //     if (!user || !user.isAdmin) {
 //       router.push("/");
 //     } else {
@@ -294,7 +256,6 @@ export default ManageProducts;
 //     }
 //   }, [user]);
 
-//   // Handle form submission (Add or Edit Product)
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
 //     const formDataObj = new FormData();
@@ -323,20 +284,16 @@ export default ManageProducts;
 //           headers: config.headers,
 //         });
 //       }
-//       console.log("Response Status:", response.status);
 
-//       if (!response.ok) {
-//         throw new Error("Failed to submit product");
-//       }
+//       if (!response.ok) throw new Error("Failed to submit product");
 
 //       resetForm();
 //       fetchProducts();
 //     } catch (error) {
-//       console.error("Failed to submit product", error.message);
+//       console.error(error.message);
 //     }
 //   };
 
-//   // Handle delete product
 //   const handleDelete = async (id) => {
 //     try {
 //       const response = await fetch(`/api/products/${id}`, {
@@ -345,21 +302,17 @@ export default ManageProducts;
 //           Authorization: `Bearer ${user.token}`,
 //         },
 //       });
-//       if (!response.ok) {
-//         throw new Error("Failed to delete product");
-//       }
+//       if (!response.ok) throw new Error("Failed to delete product");
 //       fetchProducts();
 //     } catch (error) {
-//       console.error("Failed to delete product", error.message);
+//       console.error(error.message);
 //     }
 //   };
 
-//   // Handle edit button click
 //   const handleEditClick = (product) => {
 //     router.push(`/admin/manage-products?id=${product._id}`);
 //   };
 
-//   // Handle form input changes
 //   const handleChange = (e) => {
 //     if (e.target.name === "image") {
 //       setFormData({ ...formData, image: e.target.files[0] });
@@ -368,7 +321,6 @@ export default ManageProducts;
 //     }
 //   };
 
-//   // Reset form after submission or cancel
 //   const resetForm = () => {
 //     setIsEditing(false);
 //     setFormData({ name: "", price: "", description: "", image: null });
@@ -379,7 +331,6 @@ export default ManageProducts;
 //     <div className="p-6">
 //       <h1 className="text-2xl font-bold mb-4">Manage Products</h1>
 
-//       {/* Form to Add/Edit Product */}
 //       <form onSubmit={handleSubmit} className="mb-6 p-4 bg-gray-100 rounded">
 //         <input
 //           type="text"
@@ -408,7 +359,6 @@ export default ManageProducts;
 //           className="block w-full p-2 mb-2 border rounded"
 //         ></textarea>
 
-//         {/* Image Upload Field */}
 //         <input
 //           type="file"
 //           name="image"
@@ -434,7 +384,6 @@ export default ManageProducts;
 //         )}
 //       </form>
 
-//       {/* Product List */}
 //       <table className="w-full bg-white border rounded">
 //         <thead>
 //           <tr className="bg-gray-200">
@@ -469,6 +418,5 @@ export default ManageProducts;
 //     </div>
 //   );
 // };
-// console.log("Backend URL:", process.env.NEXT_PUBLIC_BACKEND_URL);
 
 // export default ManageProducts;
