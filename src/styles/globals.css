@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Typography */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
+
+/* Base Typography */
+html, body {
+  @apply font-body text-neutral-700 antialiased overflow-x-hidden text-[15.5px];
+}
+
+/* Font Families */
+.font-body { font-family: 'Inter', sans-serif; }
+.font-heading { font-family: 'Cormorant Garamond', serif; }
+
+/* Hierarchy — Elegantly scaled */
+h1 {
+  @apply font-heading text-[2.2rem] leading-[2.6rem] font-semibold tracking-wide;
+}
+
+h2 {
+  @apply font-heading text-[1.75rem] leading-[2.2rem] font-medium;
+}
+
+h3 {
+  @apply font-heading text-[1.35rem] leading-[1.9rem] font-medium;
+}
+
+h4 {
+  @apply font-heading text-[1.15rem] leading-[1.6rem];
+}
+
+/* Section Label / Category Titles */
+.section-heading {
+  @apply font-heading text-[1.15rem] tracking-[0.06em] text-neutral-600 uppercase;
+  opacity: 0.85;
+}
+
+
+/* Apothecary Gradient Background */
+body {
+  background: radial-gradient(circle at center, #F5F1EB 0%, #E8E3DA 70%, #D6CFC4 100%);
+}
+
+/* Remove Scrollbars */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Enchanted Motion Effects */
+@keyframes sparkleFloat {
+  0% { opacity: 0; transform: translate(-50%, 10px) scale(0.9); }
+  40% { opacity: 1; transform: translate(-50%, -6px) scale(1); }
+  70% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -20px) scale(0.95); }
+}
+.animate-sparkle { animation: sparkleFloat 1.2s ease-out; }
+
+@keyframes auraGlow {
+  0%   { box-shadow: 0 0 0px rgba(199, 162, 105, 0); }
+  40%  { box-shadow: 0 0 18px rgba(199, 162, 105, 0.55); }
+  80%  { box-shadow: 0 0 24px rgba(199, 162, 105, 0.35); }
+  100% { box-shadow: 0 0 0px rgba(199, 162, 105, 0); }
+}
+.animate-aura { animation: auraGlow 0.9s ease-out; }
+
+/* UI Corner Aesthetic */
+:root {
+  --rounded-box: 0.35rem;
+  --rounded-btn: 0.35rem;
+  --rounded-badge: 0.35rem;
+}
+
+/* Floating Tea Steam */
+@keyframes teaSteam {
+  0% { opacity: 0; transform: translateY(6px) scale(0.95); }
+  40% { opacity: 0.6; transform: translateY(-6px) scale(1); }
+  70% { opacity: 0.5; }
+  100% { opacity: 0; transform: translateY(-14px) scale(0.97); }
+}
+.steam {
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  height: 40px;
+  background: radial-gradient(circle, rgba(215,205,185,0.5) 0%, rgba(215,205,185,0) 70%);
+  border-radius: 9999px;
+  animation: teaSteam 3.2s ease-in-out infinite;
+  filter: blur(1.4px);
+  pointer-events: none;
+}
+.steam:nth-child(1) { animation-delay: 0s; transform: translateX(-20px); }
+.steam:nth-child(2) { animation-delay: 0.7s; transform: translateX(10px); }
+.steam:nth-child(3) { animation-delay: 1.4s; transform: translateX(-5px); }
+
+/* Ink Stroke Divider (uses ink-stroke.png in /public) */
+.ink-divider {
+  width: 100%;
+  height: 2px;
+  background-image: url('/ink-stroke.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  opacity: 0.7;
+  margin: 3rem auto;
+}
