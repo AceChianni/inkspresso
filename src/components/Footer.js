@@ -1,33 +1,43 @@
 // /components/Footer.js
+
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-base-200 border-t border-base-300 py-10 mt-20">
+    <footer className="bg-[#E8E3DA] border-t border-base-300 py-12 mt-20">
       <div className="max-w-6xl mx-auto px-6 grid gap-10 md:grid-cols-3 text-center md:text-left">
 
         {/* Brand */}
-        <div>
-          <h3 className="font-heading text-xl text-neutral mb-2">Inkspresso</h3>
-          <p className="text-neutral/70 font-body">
-            Where books & coffee create magic. A cozy space to sip, read, and unwind.
-          </p>
-        </div>
+        <div className="flex flex-col items-center md:items-start">
+  <Image
+    src="/logo.png"
+    alt="Inkspresso Logo"
+    width={55}
+    height={55}
+    className="opacity-80 drop-shadow-md"
+  />
+  <h3 className="font-heading text-xl text-[#5A4632] mt-3">Inkspresso</h3>
+  <p className="text-neutral/70 font-body mt-1">
+    Where books & blends create magic.<br />Sip, read, unwind.
+  </p>
+</div>
+
 
         {/* Quick Links */}
         <div>
-          <h3 className="font-heading text-lg text-neutral mb-2">Explore</h3>
+          <h3 className="font-heading text-lg text-[#5A4632] mb-2">Explore</h3>
           <ul className="space-y-1 font-body">
             <li><Link href="/" className="hover:text-primary">Home</Link></li>
             <li><Link href="/products" className="hover:text-primary">Menu</Link></li>
-            <li><Link href="/cart" className="hover:text-primary">Cart</Link></li>
-            <li><Link href="/library/checkoutbooks" className="hover:text-primary">Books</Link></li>
+            <li><Link href="/library" className="hover:text-primary">Library</Link></li>
+            <li><Link href="/library/checkout" className="hover:text-primary">Bookshelf</Link></li>
           </ul>
         </div>
 
         {/* Legal */}
         <div>
-          <h3 className="font-heading text-lg text-neutral mb-2">Legal</h3>
+          <h3 className="font-heading text-lg text-[#5A4632] mb-2">Legal</h3>
           <ul className="space-y-1 font-body">
             <li><Link href="/legal/terms" className="hover:text-primary">Terms</Link></li>
             <li><Link href="/legal/privacy" className="hover:text-primary">Privacy</Link></li>
