@@ -1,3 +1,4 @@
+/* /src/styles/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -32,34 +33,49 @@ h4 {
 }
 
 /* 🖋️ Nav Link Brush Hover Effect */
-@layer components {
-  .nav-link {
-    @apply font-body text-neutral-700 transition-all duration-300 relative pb-[3px] cursor-pointer;
-  }
-
-  .nav-link::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 2px;
-    background-image: url('/ink-stroke.png');
-    background-repeat: no-repeat;
-    background-size: 0% 100%;
-    opacity: 0.75;
-    display: block; /* ✅ Ensure visibility */
-    transition: background-size 350ms ease;
-  }
-
-  .nav-link:hover {
-    color: hsl(var(--p)); /* ✅ DaisyUI primary color variable */
-  }
-
-  .nav-link:hover::after {
-    background-size: 100% 100%; /* ✅ Stroke animates in */
-  }
+/* ✒️ Ink-Brush Hover Effect — refined version */
+.nav-link {
+  font-family: 'Inter', sans-serif;
+  color: #3B2F2F;
+  position: relative;
+  padding-bottom: 3px;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.25s ease;
 }
+
+/* Brush underline (using your ink-stroke.png) */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 3px;
+  background-image: url("/ink-stroke.png");
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  background-position: center;
+  opacity: 0.8;
+  transition: background-size 0.4s ease-in-out, opacity 0.4s ease-in-out;
+}
+
+/* Hover state — animate color + brush stroke */
+.nav-link:hover {
+  color: #c26405e7; /* your theme primary */
+  transform: translateY(-1px);
+}
+
+.nav-link:hover::after {
+  background-size: 100% 100%;
+  opacity: 1;
+}
+
+/* Optional subtle active state */
+.nav-link:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
 
 /* Section Label / Category Titles */
 .section-heading {
