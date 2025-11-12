@@ -1,109 +1,85 @@
 // /src/pages/checkout.js
-
-import { useContext, useState } from "react";
-import { CartContext } from "@/context/CartContext";
+import { useCart } from "@/context/CartContext";
+import Link from "next/link";
 
 export default function CheckoutPage() {
-  const { cart } = useContext(CartContext);
-
-  // Temporary local state — replaced later when Stripe integration happens
-  const [customerName, setCustomerName] = useState("");
-  const [customerEmail, setCustomerEmail] = useState("");
-  const [pickupOption, setPickupOption] = useState("pickup");
-
+  const { cart } = useCart();
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12">
-      <h1 className="font-heading text-3xl text-neutral mb-10 text-center">
+    <div className="max-w-4xl mx-auto px-6 py-16">
+      <h1 className="font-heading text-4xl mb-8 text-center text-neutral">
         Checkout
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-
-        {/* LEFT SIDE — CUSTOMER INFO */}
-        <div>
-          <label className="font-body text-neutral block mb-2">Your Name</label>
-          <input
-            value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
-            className="input input-bordered w-full mb-6"
-            placeholder="Enter your name"
-          />
-
-          <label className="font-body text-neutral block mb-2">Email Address</label>
-          <input
-            value={customerEmail}
-            onChange={(e) => setCustomerEmail(e.target.value)}
-            className="input input-bordered w-full mb-6"
-            placeholder="you@example.com"
-            type="email"
-          />
-
-          <label className="font-body text-neutral block mb-3">Order Method</label>
-          <div className="flex gap-4 mb-8">
-            <button
-              onClick={() => setPickupOption("pickup")}
-              className={`btn w-full rounded-full normal-case ${
-                pickupOption === "pickup" ? "btn-primary" : "btn-outline"
-              }`}
-            >
-              Pickup
-            </button>
-            <button
-              onClick={() => setPickupOption("shipping")}
-              className={`btn w-full rounded-full normal-case ${
-                pickupOption === "shipping" ? "btn-primary" : "btn-outline"
-              }`}
-            >
-              Shipping
-            </button>
-          </div>
-
-          {/* Later we conditionally show address fields if shipping is selected */}
-          {pickupOption === "shipping" && (
-            <div className="space-y-4 mb-10">
-              <input className="input input-bordered w-full" placeholder="Street Address" />
-              <div className="flex gap-3">
-                <input className="input input-bordered w-full" placeholder="City" />
-                <input className="input input-bordered w-full" placeholder="State" />
-              </div>
-              <input className="input input-bordered w-full" placeholder="ZIP Code" />
-            </div>
-          )}
-
-          {/* CHECKOUT BUTTON (Stripe later) */}
-          <button className="btn btn-primary w-full rounded-full normal-case py-3">
-            Continue to Payment
-          </button>
+      {cart.length === 0 ? (
+        <div className="text-center">
+          <p className="text-neutral/70 mb-6">Your cart is empty.</p>
+          <Link href="/products" className="btn btn-primary rounded-full px-6">
+            Back to Menu
+          </Link>
         </div>
+      ) : (
+        <>
+          {/* 🧾 Order Summary */}
+          <div className="border border-base-300 rounded-lg p-6 bg-base-100/90 shadow-sm">
+            <h2 className="font-heading text-2xl mb-4 text-neutral">
+              Order Summary
+            </h2>
+            <div className="divide-y divide-base-300">
+              {cart.map((item) => (
+                <div
+                  key={`${item.id}-${item.size}`}
+                  className="flex items-center justify-between py-3"
+                >
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-16 h-16 rounded-md object-cover border border-base-300 shadow-sm"
+                    />
+                    <div>
+                      <p className="font-medium text-neutral">{item.name}</p>
+                      {item.size && (
+                        <p className="text-sm text-neutral/60">Size: {item.size}</p>
+                      )}
+                      <p className="text-sm text-neutral/70">
+                        ${item.price.toFixed(2)} × {item.quantity}
+                      </p>
+                    </div>
+                  </div>
 
-        {/* RIGHT SIDE — ORDER SUMMARY */}
-        <div className="border border-base-300 rounded-xl p-6 self-start sticky top-24">
-          <h2 className="font-heading text-xl mb-4 text-neutral">Order Summary</h2>
-
-          <div className="space-y-4 mb-6 max-h-[50vh] overflow-y-auto pr-2">
-            {cart.map((item) => (
-              <div key={`${item._id}-${item.size}`} className="font-body flex justify-between">
-                <div>
-                  <p className="text-neutral">{item.name}</p>
-                  {item.size && <p className="text-neutral/60 text-sm">{item.size}</p>}
+                  <p className="text-primary font-semibold">
+                    ${(item.price * item.quantity).toFixed(2)}
+                  </p>
                 </div>
-                <p className="text-neutral">${(item.price * item.quantity).toFixed(2)}</p>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            <div className="flex justify-between mt-6 font-body text-lg">
+              <span>Subtotal:</span>
+              <span className="font-semibold text-primary">
+                ${subtotal.toFixed(2)}
+              </span>
+            </div>
           </div>
 
-          <div className="border-t border-base-300 pt-4">
-            <p className="font-body text-lg text-neutral flex justify-between">
-              Subtotal:
-              <span className="font-heading">${subtotal.toFixed(2)}</span>
+          {/* 💳 Payment Section */}
+          <div className="mt-10 border border-base-300 rounded-lg p-6 bg-base-100/90 shadow-sm">
+            <h2 className="font-heading text-2xl mb-4 text-neutral">Payment</h2>
+            <p className="text-neutral/70 mb-6">
+              Payment integration will be added soon. For now, this page confirms your
+              order details.
             </p>
-            <p className="font-body text-sm text-neutral/60 mt-1">Tax + shipping calculated at payment</p>
-          </div>
-        </div>
 
-      </div>
+            <button
+              className="px-8 py-2 rounded-full font-medium text-base-100 bg-[#6F7C56] hover:bg-[#C7A269] hover:text-neutral shadow-sm transition-all duration-300"
+            >
+              Confirm Order
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
