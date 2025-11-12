@@ -24,6 +24,7 @@ export default function Navbar({ toggleCart }) {
           <Link href="/"><span className="nav-link">Home</span></Link>
           <Link href="/products"><span className="nav-link">Menu</span></Link>
           <Link href="/library"><span className="nav-link">Library</span></Link>
+          <Link href="/library/checkout" className="nav-link">Bookshelf</Link>
         </div>
 
         {/* Cart */}
