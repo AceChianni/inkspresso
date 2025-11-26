@@ -1,197 +1,155 @@
 // /src/components/SolunaSourceWidget.js
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const SEED_MESSAGE = {
   from: "bot",
-  text: "Hi, I'm Soluna Source 🌙✨ Ask me about herbs, their physical + metaphysical uses, origins, or pairing ideas.",
+  text: "Welcome to Soluna Source 🌙✨ Ask me about herbs, their physical + metaphysical uses, origins, rituals, or divine pairings.",
 };
 
+const QUICK_PROMPTS = [
+  "Herbs for Anxiety",
+  "Herbs for Protection",
+  "Herbs for Dreamwork",
+  "Best Daily Herbs (Women)",
+  "Best Daily Herbs (Men)",
+];
+
+const CATEGORIES = ["Calm", "Protection", "Love", "Clarity", "Growth"];
+
 export default function SolunaSourceWidget() {
-  const [isOpen, setIsOpen] = useState(true); // starts open on first load
+  const [isOpen, setIsOpen] = useState(true);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([SEED_MESSAGE]);
+  const [ambientOn, setAmbientOn] = useState(false);
 
-  const handleToggle = () => setIsOpen((prev) => !prev);
+  const scrollRef = useRef(null);
+  const scrollPosition = useRef(0);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const trimmed = input.trim();
-    if (!trimmed) return;
+  const handleToggle = () => setIsOpen(prev => !prev);
 
-    // Add user message
-    const userMsg = { from: "user", text: trimmed };
+  // preserve scroll location
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollPosition.current;
+    }
+  }, [isOpen]);
 
-    // Simple placeholder bot reply for now
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      scrollPosition.current = scrollRef.current.scrollTop;
+    }
+  };
+
+  const pushMessage = (text) => {
+    const userMsg = { from: "user", text };
     const botMsg = {
       from: "bot",
       text:
-        "This is a preview of Soluna Source. In the full version, I'll give you detailed herbal insights, rituals, and safety notes just for you 🌿",
+        "🌿 Soluna will soon respond with detailed herbal wisdom, emotional alignment, safety notes and ritual guidance.",
     };
+    setMessages(prev => [...prev, userMsg, botMsg]);
+  };
 
-    setMessages((prev) => [...prev, userMsg, botMsg]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+    pushMessage(input);
     setInput("");
   };
 
   return (
     <>
-      {/* Minimized pill */}
       {!isOpen && (
         <button
           onClick={handleToggle}
-          className="fixed bottom-4 right-4 z-[60] px-4 py-2 rounded-full bg-[#5A4632] text-base-100 text-sm font-medium shadow-lg hover:bg-[#C7A269] hover:text-neutral flex items-center gap-2 transition-all"
+          className="fixed bottom-4 right-4 z-[60] px-4 py-2 rounded-full bg-[#cf8421b7] text-base-100 text-sm font-medium shadow-lg hover:bg-[#C7A269] flex items-center gap-2 transition-all"
         >
-          <span className="text-lg">☕</span>
-          <span>Soluna Source</span>
+          🌙 Soluna Source
         </button>
       )}
 
-      {/* Open chat panel */}
       {isOpen && (
-        <div className="fixed bottom-4 right-4 z-[60] w-[320px] md:w-[360px] rounded-2xl bg-[#F5F1EB]/95 border border-[#C7A269]/60 shadow-2xl overflow-hidden soluna-mist-panel">
-          {/* Header */}
-          <div className="relative px-4 py-3 flex items-center justify-between bg-gradient-to-r from-[#5A4632] via-[#7A5A3A] to-[#C7A269] text-base-100">
-            <div className="flex items-center gap-2">
-              <span className="text-lg">🌙</span>
-              <div className="text-left">
-                <p className="font-heading text-sm tracking-wide">
-                  Soluna Source
-                </p>
-                <p className="text-[11px] opacity-80 font-body">
-                  Herbal wisdom & metaphysical notes
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={handleToggle}
-              className="w-7 h-7 flex items-center justify-center rounded-full bg-black/20 hover:bg-black/30 text-xs"
-              aria-label="Minimize Soluna Source"
-            >
-              ⤵
-            </button>
+        <div className="fixed bottom-4 right-4 z-[60] w-[340px] md:w-[380px] rounded-2xl bg-[#F5F1EB]/95 border border-[#C7A269]/60 shadow-2xl overflow-hidden soluna-mist-panel">
 
-            {/* floating mist orbs */}
-            <div className="pointer-events-none">
-              <span className="soluna-orb soluna-orb-1" />
-              <span className="soluna-orb soluna-orb-2" />
+          {/* Header */}
+          <div className="px-4 py-3 flex items-center justify-between bg-gradient-to-r from-[#a66a2b] via-[#cfa45e] to-[#C7A269] text-base-100">
+            <div>
+              <p className="font-heading text-sm">Soluna Source</p>
+              <p className="text-[11px] opacity-80">Cozy herbal oracle ✨</p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setAmbientOn(!ambientOn)}
+                className="text-xs px-2 py-1 rounded-full bg-black/20 hover:bg-black/40"
+              >
+                {ambientOn ? "🔊" : "🌙"}
+              </button>
+              <button onClick={handleToggle} className="text-sm">✕</button>
             </div>
           </div>
 
-          {/* Messages */}
-          <div className="px-4 py-3 max-h-64 overflow-y-auto space-y-3 bg-gradient-to-t from-[#E8E3DA] via-[#F5F1EB] to-[#F8F4EC]">
-            {messages.map((msg, idx) => (
-              <div
-                key={idx}
-                className={`flex ${
-                  msg.from === "user" ? "justify-end" : "justify-start"
-                }`}
+          {/* Herbal Categories */}
+          <div className="flex justify-center gap-2 px-3 py-2 text-[10px] bg-[#f3efe5]">
+            {CATEGORIES.map(cat => (
+              <button
+                key={cat}
+                onClick={() => pushMessage(`Herbs for ${cat}`)}
+                className="px-2 py-1 rounded-full border border-[#C7A269]/40 hover:bg-[#C7A269]/30 transition"
               >
-                <div
-                  className={`rounded-2xl px-3 py-2 max-w-[85%] text-xs leading-snug shadow-sm ${
-                    msg.from === "user"
-                      ? "bg-[#9e5813] text-base-100 rounded-br-sm"
-                      : "bg-white/90 text-[#3A2E23] border border-[#C7A269]/40 rounded-bl-sm"
-                  }`}
-                >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Messages */}
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="px-4 py-3 max-h-72 overflow-y-auto space-y-3"
+          >
+            {messages.map((msg, idx) => (
+              <div key={idx} className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}>
+                <div className={`rounded-2xl px-3 py-2 text-xs max-w-[85%] ${
+                  msg.from === "user"
+                    ? "bg-[#9e5813] text-white"
+                    : "bg-white border border-[#C7A269]/40"
+                }`}>
                   {msg.text}
                 </div>
               </div>
             ))}
           </div>
 
+          {/* Quick buttons */}
+          <div className="flex flex-wrap gap-2 px-3 py-2 bg-[#efe9db]">
+            {QUICK_PROMPTS.map((p) => (
+              <button
+                key={p}
+                onClick={() => pushMessage(p)}
+                className="text-[10px] px-2 py-1 rounded-full border border-[#C7A269]/40 hover:bg-[#C7A269]/30"
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+
           {/* Input */}
-          <form
-            onSubmit={handleSubmit}
-            className="border-t border-[#ce7822]/40 bg-[#F5F1EB]/90 px-3 py-2"
-          >
-            <div className="flex items-center gap-2">
+          <form onSubmit={handleSubmit} className="px-3 py-2 border-t">
+            <div className="flex gap-2">
               <input
-                type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about an herb or blend..."
-                className="flex-1 text-xs px-3 py-2 rounded-full bg-[#FDF8EE] border border-[#C7A269]/40 focus:outline-none focus:ring-2 focus:ring-[#C7A269]/40 focus:border-[#C7A269]/70 placeholder:text-neutral/50"
+                placeholder="Ask the oracle..."
+                className="flex-1 text-xs px-3 py-2 rounded-full border border-[#C7A269]/40"
               />
-              <button
-                type="submit"
-                className="px-3 py-2 rounded-full bg-[#ce7822] text-base-100 text-xs font-medium hover:bg-[#C7A269] hover:text-neutral shadow-sm transition-all"
-              >
+              <button className="px-3 py-2 bg-[#ce7822] rounded-full text-white text-xs">
                 Send
               </button>
             </div>
-            <p className="mt-1 text-[10px] text-neutral/60 text-center">
-              Future: powered by herbal AI for Soluna Healing 🌿
-            </p>
           </form>
         </div>
       )}
-
-      {/* Local styles for mist / orbs */}
-      <style jsx>{`
-        .soluna-mist-panel {
-          animation: solunaMistIn 0.9s ease-out;
-        }
-
-        @keyframes solunaMistIn {
-          0% {
-            opacity: 0;
-            transform: translateY(10px) scale(0.98);
-            filter: blur(6px);
-          }
-          60% {
-            opacity: 1;
-            transform: translateY(-2px) scale(1);
-            filter: blur(0);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-
-        .soluna-orb {
-          position: absolute;
-          border-radius: 9999px;
-          background: radial-gradient(
-            circle at 30% 30%,
-            rgba(255, 255, 255, 0.9),
-            rgba(255, 255, 255, 0)
-          );
-          opacity: 0.5;
-          filter: blur(2px);
-          pointer-events: none;
-        }
-
-        .soluna-orb-1 {
-          width: 70px;
-          height: 70px;
-          top: -25px;
-          right: 15px;
-          animation: solunaOrbFloat 6s ease-in-out infinite;
-        }
-
-        .soluna-orb-2 {
-          width: 40px;
-          height: 40px;
-          top: 5px;
-          right: 70px;
-          animation: solunaOrbFloat 8s ease-in-out infinite;
-        }
-
-        @keyframes solunaOrbFloat {
-          0% {
-            transform: translateY(0);
-            opacity: 0.5;
-          }
-          50% {
-            transform: translateY(-6px);
-            opacity: 0.9;
-          }
-          100% {
-            transform: translateY(0);
-            opacity: 0.5;
-          }
-        }
-      `}</style>
     </>
   );
 }

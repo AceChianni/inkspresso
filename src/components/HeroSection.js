@@ -22,7 +22,7 @@ export default function HeroSection() {
 
         <Link
           href="/products"
-          className="inline-block btn rounded-full normal-case px-8 mt-6 bg-[#5A4632] text-[#F5F1EB] hover:bg-[#3F2F22] transition"
+          className="inline-block btn rounded-full normal-case px-8 mt-6 bg-[#a5713d] text-[#F5F1EB] hover:bg-[#3F2F22] transition"
         >
           Browse Menu
         </Link>
